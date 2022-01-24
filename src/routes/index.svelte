@@ -1,18 +1,23 @@
+
 <script context="module">
+  
   export async function load ({fetch}) {
-    const res = await fetch(`/api/post.json`);
-    const post = await res.json();
+    const res = await fetch(`/api/posts.json`);
+    const posts = await res.json();
+
     return {
       props: {
-        post
+        posts
       }
     }
   }
 </script>
 
 <script>
-  export let post;
+  export let posts;
 </script>
-<h1>{post.title}</h1>
-<img src={post.img} alt="kép">
-<p>{post.description}</p>
+
+{#each posts as post}
+  <h1>{post.title}</h1>
+  <p>{post.description}</p>
+{/each}

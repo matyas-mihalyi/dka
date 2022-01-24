@@ -1,14 +1,13 @@
 const max_num_of_ids = 101000;
 const id_length = 6;
 
-
 export function getIds (count=10) {
   const ids = new Array();
 
   for (let i = 0; i < count; i++) {
-    ids.push(Math.random() * (max_num_of_ids - 1) + 1)
+    ids.push(Math.floor(Math.random() * (max_num_of_ids - 1) + 1).toString())
   };
-
+    
   ids.forEach((id, i) => {
     ids[i] = addZeroes(id);
   });
@@ -26,5 +25,5 @@ function addZeroes (id=1) {
     }
   };
 
-  return `${zeroes.join()}${id}`;
+  return `${zeroes.join('')}${id}`;
 }

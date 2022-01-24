@@ -14,10 +14,11 @@
 </script>
 
 <script>
+  import Post from '$lib/Post.svelte'
+
   export let posts;
 </script>
 
 {#each posts as post}
-  <h1>{post.title}</h1>
-  <p>{post.description}</p>
+  <Post post={post} />
 {/each}

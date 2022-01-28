@@ -17,13 +17,13 @@ export const get = async () => {
       const post = {
         img: getPictureUrl(js.dkalista.DKA.identifier.Filename._text, js.dkalista.DKA.identifier.URLOfDoc._text),
         title: js.dkalista.DKA.DKAtitle.MainTitle._text,
-        description: getDescription(js.dkalista.DKA, { truncated: true})
+        description: getDescription(js.dkalista.DKA, { truncated: true}),
+        id: id
       }
       posts.push(post);
     }
     return posts;
   }, []);
-
 
   return {
     status: 200,

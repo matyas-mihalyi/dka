@@ -6,8 +6,8 @@
   <h2>{post.title}</h2>
   <img src="{post.img}" alt="">
   <p>
-    {post.description}
-    <a href={`/${post.id}`}>Tovább &#8594</a>
+    {@html post.description}
+    <a href={`/posts/${post.id}`}>Tovább &#8594</a>
   </p>
 </article>
 

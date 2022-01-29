@@ -14,7 +14,6 @@
 
 <script>
   import Post from '$lib/Post.svelte'
-
   export let posts;
 </script>
 

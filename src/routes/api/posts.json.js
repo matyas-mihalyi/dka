@@ -1,16 +1,13 @@
 import { xml2js } from 'xml-js';
 
-import { getPictureUrl, getDescription } from './utils';
-
-import { getIds } from '$lib/utils.js'
+import { getPictureUrl, getDescription, getIds } from './utils';
 
 export const get = async () => {
   const ids = getIds();
-
+  
   const posts = await ids.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;
     const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);
-    console.log(res.ok)
     if (res.ok) {
       const text = await res.text();
       const js = xml2js(text, {compact: true});

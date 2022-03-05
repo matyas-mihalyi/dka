@@ -9,23 +9,29 @@ export const get = async ({params}) => {
   const xml = xml2js(text, {compact: true});
 
   // console.log(id)
+  // console.log(xml.dkalista.DKA.date)
   // console.log(xml.dkalista.DKA)
 
-  const img = getPictureUrl(await xml.dkalista.DKA.identifier.Filename._text, await xml.dkalista.DKA.identifier.URLOfDoc._text) 
+  const img = getPictureUrl(await xml.dkalista.DKA.identifier.Filename._text, await xml.dkalista.DKA.identifier.URLOfDoc._text);
   const title = await xml.dkalista.DKA.DKAtitle.MainTitle._text; 
   const description = getDescription(await xml.dkalista.DKA);
   const related = getRelated(await xml.dkalista.DKA.relation);
   const originalUrl = await xml.dkalista.DKA.identifier.URLOfDoc._text;
   //const author
-  //const src
+  const src = await xml.dkalista.DKA.source.NameOfSource?._text || null;
+  const srcUrl = await xml.dkalista.DKA.source.URLOfSource?._text || null;
 
   const post = {
-    title: title,
-    description: description,
-    img: img,
-    related: related,
-    originalUrl: originalUrl,
+    title,
+    description,
+    img,
+    related,
+    originalUrl,
+    src,
+    srcUrl
   };
+
+  console.log(post)
 
   return {
     status: 200,

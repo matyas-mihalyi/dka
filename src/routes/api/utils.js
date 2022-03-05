@@ -66,3 +66,10 @@ function getIdFromUrl (str = "") {
   const id = str.replace(/.*\/(\d+)$/, "$1");
   return id;
 };
+
+export function getCookie(cookie, name)
+{
+  var re = new RegExp(name + "=([^;]+)");
+  var value = re.exec(cookie);
+  return (value != null) ? unescape(value[1]) : null;
+}

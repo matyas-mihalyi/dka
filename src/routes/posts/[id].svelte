@@ -34,8 +34,12 @@
     <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
   </section>
   <section>
-    <p>Szerző</p>
-    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
+    <p>Forrás</p>
+    {#if post.srcUrl}
+      <a href={post.srcUrl} target="_blank">{post.src}</a>
+    {:else}
+      <p>{post.src}</p> 
+    {/if}
   </section>
   
   <span class="divider" aria-hidden="true"></span>

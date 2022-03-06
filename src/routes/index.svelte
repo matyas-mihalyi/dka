@@ -15,7 +15,7 @@
 </script>
 
 <script>
-  import Post from '$lib/Post.svelte'
+  import Post from '$lib/components/Post.svelte'
   export let posts;
 
 </script>

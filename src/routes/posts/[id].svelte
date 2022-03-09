@@ -21,7 +21,7 @@
     
   <header>
     <h1>{post.title}</h1>
-    <a href="/" title="Vissza a főoldalra">&#8592;</a>
+    <a href="/" title="Vissza a főoldalra"><i class="ri-arrow-left-s-line"></i></a>
   </header>
 
   <img src={post.img} alt={`${post.title} kép`}>
@@ -42,9 +42,9 @@
     {/if}
   </section>
   
+  <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
   <span class="divider" aria-hidden="true"></span>
   
-  <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
 
 </article>
 
@@ -73,21 +73,27 @@
   h1 {
     font-size: 1.125rem;
     text-align: center;
+    flex-grow: 1;
   }
 
   header {
-    /* display: flex;
-    flex-direction: row-reverse; */
-    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
   }
 
   header > a {
     text-decoration: none;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-right: 0.25em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  header > a > i {
+    font-size: 1.5rem;
   }
 
   img {
@@ -103,7 +109,6 @@
   
   a {
     font-size: 0.8125rem;
-    /* text-decoration: none; */
     color: #444;
     display: inline;
     align-items: center;

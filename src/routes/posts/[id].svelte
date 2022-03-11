@@ -11,18 +11,30 @@
     };
   }
 
-  function savePost (id="") {
-    fetch('/save-post', {method: 'PUT', body: `${id}`});
-  };
   
-  function deleteSavedPost (id="") {
-    fetch('/save-post', {method: 'PUT', body: `${id}`});
-  };
-
 </script>
 
 <script>
+  import { writable } from "svelte/store";
+  
   export let post;
+  
+  const isSaved = writable(post.saved);
+
+  function savePost (id="") {
+    fetch('/save-post', {method: 'PUT', body: `${id}`});
+    isSaved.set(true);
+    console.log($isSaved)
+  };
+  
+  function deleteSavedPost (id="") {
+    fetch('/delete-post', {method: 'DELETE', body: `${id}`});
+    isSaved.set(false);
+    console.log($isSaved)
+  };
+
+  console.log($isSaved)
+
 </script>
 
 <article>
@@ -52,7 +64,18 @@
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
   <span class="divider" aria-hidden="true"></span>
-  <button on:click="{savePost(post.id)}">save post</button>
+
+  {#if $isSaved}
+  <button on:click="{deleteSavedPost(post.id)}">
+    <i class="ri-heart-3-fill"></i>
+    delete
+  </button>
+  {:else}  
+  <button on:click="{savePost(post.id)}">
+    <i class="ri-heart-3-line"></i>
+    save
+  </button>
+  {/if}
   
 
 </article>

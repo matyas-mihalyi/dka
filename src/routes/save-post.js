@@ -2,16 +2,15 @@ import { getCookie } from './api/utils';
 
 export const put = async ({request}) => {
 
+  console.log("save")
+
+
   const newSavedPost = await request.text();
-  console.log(newSavedPost)
 
   const cookies = await request.headers.get('cookie');
-  console.log(cookies)
   const savedPosts = await JSON.parse(getCookie(await cookies, 'savedPosts')) || [];
-  console.log(savedPosts)
 
   savedPosts.push(newSavedPost);
-  console.log(savedPosts)
 
   const cookieValue = JSON.stringify(savedPosts);
 

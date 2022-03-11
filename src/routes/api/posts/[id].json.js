@@ -38,7 +38,7 @@ export const get = async ({params, request}) => {
     srcUrl
   };
 
-  console.log(post)
+  // console.log(post)
 
   return {
     status: 200,

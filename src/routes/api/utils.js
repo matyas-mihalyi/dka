@@ -75,5 +75,8 @@ export function getCookie(cookie, name)
 }
 
 export const isSaved = (savedIds=[], id="") => {
-  return savedIds.includes(id);
+  if (savedIds && savedIds.length) {
+    return savedIds.includes(id);
+  }
+  return false
 }

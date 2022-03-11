@@ -1,21 +1,15 @@
 import { xml2js } from 'xml-js';
 import * as cookieParser from 'cookie-parser';
 
-import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
-
-
-
+import { getPictureUrl, getDescription, getCookie } from './utils';
 
 
 export const get = async ({request}) => {
   
   const cookies = request.headers.get('cookie');
-  const previousIds = await JSON.parse(getCookie(cookies, 'ids'));
-  
-  const ids = previousIds || getIds();
-  const _ids = JSON.stringify(ids);
-  
-  const posts = await ids.reduce(async (prevPromise, id) => {
+  const savedPostIds = await JSON.parse(getCookie(cookies, 'savedPosts'));
+    
+  const posts = await savedPostIds.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;
     const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);
     if (res.ok) {
@@ -32,26 +26,11 @@ export const get = async ({request}) => {
     return posts;
   }, []);
 
-  if (previousIds) {
-    return {
-      status: 200,
-      body: {
-        posts,
-        ids
-      }
-    };
-  } else {
-    return {
-      status: 200,
-      headers: {
-        'Set-Cookie': `ids=${_ids}; SameSite=Strict; HttpOnly; Secure; path=/`
-      },
-      body: {
-        posts,
-        ids
-      }
-    };
-  }
-
+  return {
+    status: 200,
+    body: {
+      posts
+    }
+  };
 
 }

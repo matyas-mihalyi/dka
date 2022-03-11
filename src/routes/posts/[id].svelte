@@ -11,6 +11,11 @@
     };
   }
 
+  function savePost (id="") {
+    console.log("fetch ran")
+    fetch('/save-post', {method: 'PUT', body: `${id}`});
+  }
+
 </script>
 
 <script>
@@ -44,6 +49,7 @@
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
   <span class="divider" aria-hidden="true"></span>
+  <button on:click="{savePost(post.id)}">save post</button>
   
 
 </article>

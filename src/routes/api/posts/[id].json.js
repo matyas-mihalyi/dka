@@ -22,6 +22,7 @@ export const get = async ({params}) => {
   const srcUrl = await xml.dkalista.DKA.source.URLOfSource?._text || null;
 
   const post = {
+    id,
     title,
     description,
     img,
@@ -31,7 +32,7 @@ export const get = async ({params}) => {
     srcUrl
   };
 
-  console.log(post)
+  // console.log(post)
 
   return {
     status: 200,

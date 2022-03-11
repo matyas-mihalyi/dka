@@ -1,9 +1,14 @@
 import { xml2js } from 'xml-js';
 
-import { getPictureUrl, getDescription, getRelated } from '../utils';
+import { getPictureUrl, getDescription, getRelated, getCookie, isSaved } from '../utils';
 
-export const get = async ({params}) => {
-  const { id } = params;
+export const get = async ({params, request}) => {
+  const { id } = await params;
+
+  const cookies = request.headers.get('cookie');
+  const savedPosts = await JSON.parse(getCookie(cookies, 'savedPosts'));
+  const saved = isSaved(await savedPosts, await id);
+
   const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);
   const text = await res.text();
   const xml = xml2js(text, {compact: true});
@@ -23,6 +28,7 @@ export const get = async ({params}) => {
 
   const post = {
     id,
+    saved,
     title,
     description,
     img,
@@ -32,7 +38,7 @@ export const get = async ({params}) => {
     srcUrl
   };
 
-  // console.log(post)
+  console.log(post)
 
   return {
     status: 200,

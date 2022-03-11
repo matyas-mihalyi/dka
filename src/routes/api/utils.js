@@ -73,3 +73,7 @@ export function getCookie(cookie, name)
   var value = re.exec(cookie);
   return (value != null) ? unescape(value[1]) : null;
 }
+
+export const isSaved = (savedIds=[], id="") => {
+  return savedIds.includes(id);
+}

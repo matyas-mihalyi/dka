@@ -12,9 +12,12 @@
   }
 
   function savePost (id="") {
-    console.log("fetch ran")
     fetch('/save-post', {method: 'PUT', body: `${id}`});
-  }
+  };
+  
+  function deleteSavedPost (id="") {
+    fetch('/save-post', {method: 'PUT', body: `${id}`});
+  };
 
 </script>
 

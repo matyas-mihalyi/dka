@@ -48,34 +48,51 @@
   <p>{@html post.description}</p>
 
   <span class="divider" aria-hidden="true"></span>
-  
-  <section>
-    <p>Kapcsolódó</p>
-    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
+
+  <section class="button-wrapper">
+
+    <!-- save button -->
+    {#if $isSaved}
+    <button on:click="{deleteSavedPost(post.id)}">
+      <i class="ri-heart-3-fill"></i>
+    </button>
+    {:else}  
+    <button on:click="{savePost(post.id)}">
+      <i class="ri-heart-3-line"></i>
+    </button>
+    {/if}
+
+    <button >
+      <i class="ri-whatsapp-line"></i>
+    </button>
+    <button >
+      <i class="ri-twitter-line"></i>
+    </button>
+    <button >
+      <i class="ri-more-fill"></i>
+    </button>
+
   </section>
+
+  <span class="divider" aria-hidden="true"></span>
+  
   <section>
     <p>Forrás</p>
     {#if post.srcUrl}
-      <a href={post.srcUrl} target="_blank">{post.src}</a>
+    <a href={post.srcUrl} target="_blank">{post.src}</a>
     {:else}
-      <p>{post.src}</p> 
+    <p>{post.src}</p> 
     {/if}
+  </section>
+
+  <section>
+    <p>Kapcsolódó</p>
+    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
   </section>
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
   <span class="divider" aria-hidden="true"></span>
 
-  {#if $isSaved}
-  <button on:click="{deleteSavedPost(post.id)}">
-    <i class="ri-heart-3-fill"></i>
-    delete
-  </button>
-  {:else}  
-  <button on:click="{savePost(post.id)}">
-    <i class="ri-heart-3-line"></i>
-    save
-  </button>
-  {/if}
   
 
 </article>
@@ -102,6 +119,21 @@
     font-weight: 500;
   }
 
+  section.button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.75em;
+  }
+  
+  section.button-wrapper > button {
+    border: none;
+    background-color: transparent;
+  }
+
+  section.button-wrapper > button > i {
+    font-size: 1.5rem;
+  }
+  
   h1 {
     font-size: 1.125rem;
     text-align: center;

@@ -1,8 +1,10 @@
 import { savedPosts } from "$lib/components/stores";
 import {writable} from 'svelte/store';
+import { browser } from "$app/env";
 
-const getSavedPosts = () => JSON.parse(localStorage.getItem("savedPosts"));
-function updateStore () { savedPosts.set(getSavedPosts()); }
+const getSavedPosts = () => browser ? JSON.parse(window.localStorage.getItem("savedPosts")) : "problémaaaaa";
+
+export function updateStore () { savedPosts.set(getSavedPosts()); };
 
 export function savePost (id="") {
   
@@ -26,4 +28,11 @@ export function deleteSavedPost (id="") {
   updateStore();
 
   console.log(JSON.parse(localStorage.getItem('savedPosts')))
+}
+
+export const saved = (id="") => {
+  if (getSavedPosts() && getSavedPosts().length) {
+    return getSavedPosts().includes(id);
+  }
+  return false
 }

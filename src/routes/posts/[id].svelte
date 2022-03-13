@@ -1,5 +1,6 @@
 <script context="module">
   
+  
   export async function load ({fetch, params}) {
     const { id } = params;
     const res = await fetch(`/api/posts/${id}.json`);
@@ -10,32 +11,32 @@
       }
     };
   }
-
+  
   
 </script>
 
 <script>
-  import { savePost, deleteSavedPost } from '../posts/utils';
-
+  import { onMount } from 'svelte';
+  import { savePost, deleteSavedPost, saved, updateStore } from '../posts/utils';  
   import { writable } from "svelte/store";
   
   export let post;
+
+  onMount(()=> {
+    updateStore();
+  }); 
   
-  const isSaved = writable(post.saved);
+  const isSaved = writable(saved(post.id));
 
   function save (id="") {
     savePost(id)
     isSaved.set(true);
-    console.log($isSaved)
   };
   
   function del (id="") {
     deleteSavedPost(id);
     isSaved.set(false);
-    console.log($isSaved)
   };
-
-  console.log($isSaved)
 
 </script>
 

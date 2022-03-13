@@ -15,20 +15,22 @@
 </script>
 
 <script>
+  import { savePost, deleteSavedPost } from '../posts/utils';
+
   import { writable } from "svelte/store";
   
   export let post;
   
   const isSaved = writable(post.saved);
 
-  function savePost (id="") {
-    fetch('/save-post', {method: 'PUT', body: `${id}`});
+  function save (id="") {
+    savePost(id)
     isSaved.set(true);
     console.log($isSaved)
   };
   
-  function deleteSavedPost (id="") {
-    fetch('/delete-post', {method: 'DELETE', body: `${id}`});
+  function del (id="") {
+    deleteSavedPost(id);
     isSaved.set(false);
     console.log($isSaved)
   };
@@ -66,12 +68,12 @@
   <span class="divider" aria-hidden="true"></span>
 
   {#if $isSaved}
-  <button on:click="{deleteSavedPost(post.id)}">
+  <button on:click="{del(post.id)}">
     <i class="ri-heart-3-fill"></i>
     delete
   </button>
   {:else}  
-  <button on:click="{savePost(post.id)}">
+  <button on:click="{save(post.id)}">
     <i class="ri-heart-3-line"></i>
     save
   </button>

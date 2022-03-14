@@ -52,6 +52,33 @@
 
   <span class="divider" aria-hidden="true"></span>
   
+  <section class="button-wrapper">
+    
+    <!-- save button -->
+    {#if $isSaved}
+    <button on:click="{del(post.id)}">
+      <i class="ri-heart-3-fill"></i>
+    </button>
+    {:else}  
+    <button on:click="{save(post.id)}">
+      <i class="ri-heart-3-line"></i>
+    </button>
+    {/if}
+    
+    <button >
+      <i class="ri-whatsapp-line"></i>
+    </button>
+    <button >
+      <i class="ri-twitter-line"></i>
+    </button>
+    <button >
+      <i class="ri-more-fill"></i>
+    </button>
+    
+  </section>
+  
+  <span class="divider" aria-hidden="true"></span>
+  
   <section>
     <p>Kapcsolódó</p>
     <a href={`/posts/${post.related.id}`}>{post.related.title}</a>

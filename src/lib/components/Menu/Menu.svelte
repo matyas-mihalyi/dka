@@ -57,6 +57,10 @@
     align-self: flex-end;
   }
 
+  button > i {
+    font-size: 1.5rem;
+  }
+
   ul {
     padding-top: 2.5em;
     display: flex;

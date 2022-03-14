@@ -79,10 +79,7 @@
   
   <span class="divider" aria-hidden="true"></span>
   
-  <section>
-    <p>Kapcsolódó</p>
-    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
-  </section>
+  
   <section>
     <p>Forrás</p>
     {#if post.srcUrl}
@@ -91,28 +88,20 @@
       <p>{post.src}</p> 
     {/if}
   </section>
+
+  <section>
+    <p>Kapcsolódó</p>
+    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
+  </section>
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
   <span class="divider" aria-hidden="true"></span>
-
-  {#if $isSaved}
-  <button on:click="{del(post.id)}">
-    <i class="ri-heart-3-fill"></i>
-    delete
-  </button>
-  {:else}  
-  <button on:click="{save(post.id)}">
-    <i class="ri-heart-3-line"></i>
-    save
-  </button>
-  {/if}
   
 
 </article>
 
 <style>
-
-  article {
+article {
     width: 100%;
     padding: 1em;
     display: flex;
@@ -132,6 +121,21 @@
     font-weight: 500;
   }
 
+  section.button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.75em;
+  }
+  
+  section.button-wrapper > button {
+    border: none;
+    background-color: transparent;
+  }
+
+  section.button-wrapper > button > i {
+    font-size: 1.5rem;
+  }
+  
   h1 {
     font-size: 1.125rem;
     text-align: center;
@@ -180,5 +184,6 @@
     width: 100%;
     border-bottom: 1px solid #ccc;
   }
+
 
 </style>

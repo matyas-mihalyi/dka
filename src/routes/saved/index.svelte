@@ -28,12 +28,13 @@
 
 <script>
   import Post from '$lib/components/Post.svelte'
+  import Loading from '$lib/components/Loading/Loading.svelte'
   export let posts;
   export let loading;
 </script>
 
 {#if loading}
-  <p>loading</p>
+  <Loading />
 {:else}
   {#each posts as post}
   <Post post={post} />

@@ -1,5 +1,6 @@
 <script context="module">
-  
+
+  export const router = false;
   
   export async function load ({fetch, params}) {
     const { id } = params;

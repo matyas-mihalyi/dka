@@ -1,13 +1,10 @@
 import { xml2js } from 'xml-js';
-import * as cookieParser from 'cookie-parser';
 
-import { getPictureUrl, getDescription, getCookie } from './utils';
+import { getPictureUrl, getDescription } from './utils';
 
-
-export const get = async ({request}) => {
+export const post = async ({request}) => {
   
-  const cookies = request.headers.get('cookie');
-  const savedPostIds = await JSON.parse(getCookie(cookies, 'savedPosts'));
+  const savedPostIds = JSON.parse(request.headers.get('savedPosts'));
     
   const posts = await savedPostIds.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;

@@ -1,14 +1,26 @@
 <script context="module">
+
+  import { getSavedPosts } from '$lib/components/stores';
+  import { browser } from '$app/env';
+
+  const savedPosts = JSON.stringify(getSavedPosts);
   
   export async function load ({fetch}) {
-
-    const res = await fetch(`/api/saved-posts.json`);
-    const {posts, ids} = await res.json();
+    if (browser) {
+      const res = await fetch(`/api/saved-posts.json`, { method: 'POST', headers: {'savedPosts': savedPosts}});
+      const {posts, ids} = await res.json();
+  
+      return {
+        props: {
+          posts,
+          ids
+        }
+      }
+    }
 
     return {
       props: {
-        posts,
-        ids
+        loading: true
       }
     }
   }
@@ -17,9 +29,13 @@
 <script>
   import Post from '$lib/components/Post.svelte'
   export let posts;
-
+  export let loading;
 </script>
 
-{#each posts as post}
-<Post post={post} />
-{/each}
+{#if loading}
+  <p>loading</p>
+{:else}
+  {#each posts as post}
+  <Post post={post} />
+  {/each}
+{/if}

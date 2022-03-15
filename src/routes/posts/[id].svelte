@@ -23,7 +23,7 @@
   export let post;
 
   onMount(()=> {
-      updateStore();
+    updateStore();
   }); 
   
   const isSaved = writable(saved(post.id));

@@ -21,8 +21,6 @@ import { get } from 'svelte/store';
 import { savedPosts } from "$lib/components/stores";
 
 export async function getSession ({request}) {
-  // const _savedPosts = request.headers.get("savedPosts") | [];
-  await console.log('getSession ' + get(savedPosts))
   const ids = request.headers.get("cookie") ? getCookie(request.headers.get('cookie'), 'ids') : null;
   // console.log(JSON.stringify(request.headers))
   return { ids,  savedPosts:  get(savedPosts) }

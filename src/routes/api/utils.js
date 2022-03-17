@@ -15,7 +15,9 @@ export function getDescription (obj = {}, param = { truncated: false}) {
     const description = keys.map(key => {
       return obj.description[key]._text
     })
-      .join("<br>");
+      .join("")
+      .replace(/\n/g, "<br>");
+
     const truncated = truncateDesc(description);  
     
     return param.truncated ?

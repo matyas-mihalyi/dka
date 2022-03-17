@@ -20,6 +20,7 @@
   import { onMount } from 'svelte';
   import { savePost, deleteSavedPost, saved, updateStore } from '../posts/utils';  
   import { writable } from "svelte/store";
+  import ImageLoader from '$lib/components/Image/ImageLoader.svelte'
   
   export let post;
 
@@ -48,7 +49,7 @@
     <a href="/" title="Vissza a főoldalra"><i class="ri-arrow-left-s-line"></i></a>
   </header>
 
-  <img src={post.img} alt={`${post.title} kép`}>
+  <ImageLoader src={post.img} alt={`${post.title} kép`}/>
   <p>{@html post.description}</p>
 
   <span class="divider" aria-hidden="true"></span>
@@ -161,13 +162,6 @@ article {
 
   header > a > i {
     font-size: 1.5rem;
-  }
-
-  img {
-    object-fit: contain;
-    width: 100%;
-    height: auto;
-    border-radius: 0.075em;
   }
 
   p {

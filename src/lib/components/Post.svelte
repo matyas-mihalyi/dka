@@ -1,10 +1,13 @@
 <script>
+  import ImageLoader from "./Image/ImageLoader.svelte";
+
+
   export let post = {};
 </script>
 
 <article>
   <h2>{post.title}</h2>
-  <img src="{post.img}" alt="">
+  <ImageLoader src="{post.img}" alt="" />
   <p>
     {@html post.description}
     <a href={`/posts/${post.id}`}>Tovább &#8594</a>
@@ -26,13 +29,6 @@
 
   h2 {
     font-size: 1.125rem;
-  }
-
-  img {
-    object-fit: contain;
-    width: 100%;
-    height: auto;
-    border-radius: 0.075em;
   }
 
   p {

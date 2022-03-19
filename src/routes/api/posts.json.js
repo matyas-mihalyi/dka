@@ -3,23 +3,23 @@ import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
 
 export const post = async ({ request }) => {
 
+  console.log("post ran")
+
   const body = JSON.parse(await request.text());
   const numberOfRequestedPosts = await body.number_of_posts;
   const loadedPosts = await body.loaded_posts;
-
-  console.log(numberOfRequestedPosts)
-  
   const cookies = request.headers.get('cookie');
   const previousIds = await JSON.parse(getCookie(cookies, 'ids'));
   
   let ids;
+  let idString;
   if (previousIds && !loadedPosts) {
     ids = previousIds;
+    idString = JSON.stringify(previousIds)
   } else {
     ids = getIds(numberOfRequestedPosts, loadedPosts);
+    idString = previousIds ? JSON.stringify([ ...previousIds, ...ids]) : JSON.stringify(ids);
   } 
-
-  const idString = JSON.stringify(ids);
   
   const posts = await ids.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;

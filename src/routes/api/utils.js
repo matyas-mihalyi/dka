@@ -1,8 +1,7 @@
 export function getRelated (relation = {}) {
-  let relatedPosts;
+  let relatedPosts = [];
   
   if (relation && relation.length) {
-    relatedPosts = [];
     relation.forEach(post => {
       relatedPosts.push({
         title: post.NameOfRelation._text,
@@ -10,13 +9,12 @@ export function getRelated (relation = {}) {
       })
     })
   } else {
-    relatedPosts = [{
+    relatedPosts.push({
       title: relation.NameOfRelation._text || "",
       id: getIdFromUrl(relation.URLOfRelation._text) || ""
-    }]
+    })
   }
   
-  console.log(relatedPosts)
   return relatedPosts  
 
 };

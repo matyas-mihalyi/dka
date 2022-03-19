@@ -1,8 +1,22 @@
-export function getRelated (obj = {}) {
-  return {
-    title: obj.NameOfRelation._text,
-    id: getIdFromUrl(obj.URLOfRelation._text)
+export function getRelated (relation = {}) {
+  let relatedPosts = [];
+  
+  if (relation && relation.length) {
+    relation.forEach(post => {
+      relatedPosts.push({
+        title: post.NameOfRelation._text,
+        id: getIdFromUrl(post.URLOfRelation._text)
+      })
+    })
+  } else {
+    relatedPosts.push({
+      title: relation.NameOfRelation._text || "",
+      id: getIdFromUrl(relation.URLOfRelation._text) || ""
+    })
   }
+  
+  return relatedPosts  
+
 };
 
 export function getPictureUrl (filename = "", url = "") {

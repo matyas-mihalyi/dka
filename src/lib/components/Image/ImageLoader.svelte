@@ -2,7 +2,7 @@
   export let src
   export let alt
 
-  import IntersectionObserver from './IntersectionObserver.svelte'
+  import IntersectionObserver from '../Common/IntersectionObserver.svelte'
   import Image from './Image.svelte'
 
   import { onMount } from 'svelte'

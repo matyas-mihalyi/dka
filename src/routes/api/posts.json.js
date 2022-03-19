@@ -4,10 +4,10 @@ import * as cookieParser from 'cookie-parser';
 import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
 
 
-
-
-
-export const get = async ({request}) => {
+export const post = async ({ request }) => {
+  const body = JSON.parse(await request.text());
+  const numberOfRequestedPosts = await body.number_of_posts;
+  console.log(numberOfRequestedPosts)
   
   const cookies = request.headers.get('cookie');
   const previousIds = await JSON.parse(getCookie(cookies, 'ids'));

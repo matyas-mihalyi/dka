@@ -93,7 +93,11 @@
 
   <section>
     <p>Kapcsolódó</p>
-    <a href={`/posts/${post.related.id}`}>{post.related.title}</a>
+    <div class="link-wrapper">
+      {#each post.related as post}
+        <a href={`/posts/${post.id}`}>{post.title}</a>
+      {/each}
+    </div>
   </section>
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
@@ -137,6 +141,8 @@ article {
   section.button-wrapper > button > i {
     font-size: 1.5rem;
   }
+
+  
   
   h1 {
     font-size: 1.125rem;
@@ -159,7 +165,7 @@ article {
     align-items: center;
     justify-content: center;
   }
-
+  
   header > a > i {
     font-size: 1.5rem;
   }
@@ -179,6 +185,16 @@ article {
     width: 100%;
     border-bottom: 1px solid #ccc;
   }
+  
+  section > div.link-wrapper {
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-
-</style>
+  div.link-wrapper > a {
+    text-align: end;
+  }
+  
+  </style>

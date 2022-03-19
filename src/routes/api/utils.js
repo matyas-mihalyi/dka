@@ -10,10 +10,10 @@ export function getRelated (relation = {}) {
       })
     })
   } else {
-    relatedPosts = {
+    relatedPosts = [{
       title: relation.NameOfRelation._text || "",
       id: getIdFromUrl(relation.URLOfRelation._text) || ""
-    }
+    }]
   }
   
   console.log(relatedPosts)

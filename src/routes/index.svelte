@@ -27,11 +27,11 @@
   export let ids;
 
   feed.set(posts);
-
+  
+  loadedPostIds.set(ids);
+  
   // console.log("feed is at beginning ")
   // console.log($feed)
-
-  loadedPostIds.set(ids);
 
   let limit = INITIAL_POSTS;
 
@@ -65,31 +65,54 @@
 
       if (newLimit <= $feed.length) {
         // load more images from store
+        console.log('loaded posts from store')
         limit = newLimit;
       } else {
-        const data = {
-          number_of_posts: ADDITONAL_POSTS_TO_FETCH,
-          loaded_posts: $loadedPostIds.splice($loadedPostIds.length - MAX_STORED_POSTS, $loadedPostIds.length)
-        };
-        const requestBody = JSON.stringify(data)
-        const response = await fetch('/api/posts.json', {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: requestBody
-        });
-        const newPosts = await response.json();
+        const newPosts = await loadPosts(ADDITONAL_POSTS_TO_FETCH);
         feed.set([...$feed, ...newPosts.posts]);
-        // console.log("$feed is after")
-        // console.log($feed)
+
         limit = newLimit;
       }
       
     } catch (error) {
       console.error(error);
     }
+  }
+
+  async function loadNewPosts () {
+    window.document.body.scrollTop = 0; // For Safari
+    window.document.documentElement.scrollTop = 0;
+    
+    try {
+      await fetch('/clear-posts', {method: 'DELETE'}); //delete ids cookie
+      feed.set([]);
+      loadedPostIds.set([]);
+      const newPosts = await loadPosts(INITIAL_POSTS);
+      feed.set(newPosts.posts);
+      loadedPostIds.set(newPosts.ids);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  async function loadPosts (numberOfPosts = ADDITONAL_POSTS_TO_FETCH) {
+    const data = {
+          number_of_posts: numberOfPosts,
+          loaded_posts: $loadedPostIds.splice($loadedPostIds.length - MAX_STORED_POSTS, $loadedPostIds.length)
+        };
+    const requestBody = JSON.stringify(data)
+    const response = await fetch('/api/posts.json', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: requestBody
+    });
+    const newPosts = await response.json();
+
+    return newPosts;
   }
 </script>
 
@@ -104,7 +127,7 @@
     <Post post={post} />
   {/each}
   {#if limitReached()}
-  <button>
+  <button on:click={loadNewPosts}>
     Új posztok betöltése
   </button>
   {/if}

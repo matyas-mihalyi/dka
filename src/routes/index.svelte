@@ -90,6 +90,7 @@
       const newPosts = await loadPosts(INITIAL_POSTS);
       feed.set(newPosts.posts);
       loadedPostIds.set(newPosts.ids);
+      limit = INITIAL_POSTS;
     } catch (error) {
       console.error(error);
     }

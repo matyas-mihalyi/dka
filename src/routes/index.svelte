@@ -1,11 +1,11 @@
 <script context="module">
   
   export async function load ({fetch}) {
+    const NUMBER_OF_INITIAL_POSTS = 10; 
 
-    const NUMBER_OF_INITIAL_POSTS = 9; 
-    const apiReqestBody = JSON.stringify({number_of_posts: NUMBER_OF_INITIAL_POSTS})
+    const apiRequestBody = JSON.stringify({number_of_posts: NUMBER_OF_INITIAL_POSTS})
 
-    const res = await fetch(`/api/posts.json`, { method: 'POST', body: apiReqestBody});
+    const res = await fetch(`/api/posts.json`, { method: 'POST', body: apiRequestBody});
     const {posts, ids} = await res.json();
 
     return {
@@ -18,11 +18,99 @@
 </script>
 
 <script>
+  import { onMount } from 'svelte';
+  import { browser } from '$app/env';
   import Post from '$lib/components/Post.svelte'
+  import { feed, loadedPostIds } from '$lib/components/stores/posts'
   export let posts;
+  export let ids;
 
+  const INITIAL_POSTS = 10;
+  const ADDITONAL_POSTS_TO_FETCH = 10;
+  const MAX_STORED_POSTS = 10;
+  const MAX_POSTS = 20;
+
+  feed.set(posts);
+
+  // console.log("feed is at beginning ")
+  // console.log($feed)
+
+  loadedPostIds.set(ids);
+
+  let limit = INITIAL_POSTS;
+
+  $: limitReached = () => {
+    return MAX_POSTS <= $feed.length;
+  };
+
+  //intersection obs
+
+  onMount(() => {
+    if (browser && document.querySelector('footer')) {
+      const handleIntersect = (entries, observer) => {
+        entries.forEach((entry) => {
+          console.log(limitReached());
+          if (limitReached()) {
+            observer.unobserve(entry.target);
+          }
+          showMorePosts();
+        });
+      };
+      const options = { threshold: 0.25, rootMargin: '-100% 0% 100%' };
+      const observer = new IntersectionObserver(handleIntersect, options);
+      observer.observe(document.querySelector('footer'));
+    }
+  });
+
+  $: showMorePosts;
+  async function showMorePosts() {
+    try {
+      const newLimit = limit + 4;
+
+      if (newLimit <= $feed.length) {
+        // load more images from store
+        limit = newLimit;
+      } else {
+        const data = {
+          number_of_posts: ADDITONAL_POSTS_TO_FETCH,
+          loaded_posts: $loadedPostIds.splice($loadedPostIds.length - MAX_STORED_POSTS, $loadedPostIds.length)
+        };
+        const requestBody = JSON.stringify(data)
+        const response = await fetch('/api/posts.json', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody
+        });
+        const newPosts = await response.json();
+        feed.set([...$feed, ...newPosts.posts]);
+        // console.log("$feed is after")
+        // console.log($feed)
+        limit = newLimit;
+      }
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 </script>
 
-{#each posts as post}
-<Post post={post} />
-{/each}
+<style>
+  main {
+    min-height: 100vh;
+  }
+</style>
+
+<main class="container">
+  {#each $feed?.slice(0, limit) as post}
+    <Post post={post} />
+  {/each}
+  {#if limitReached()}
+  <button>
+    Új posztok betöltése
+  </button>
+  {/if}
+</main>
+

@@ -2,9 +2,7 @@ import { xml2js } from 'xml-js';
 import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
 
 export const post = async ({ request }) => {
-
-  console.log("post ran")
-
+  
   const body = JSON.parse(await request.text());
   const numberOfRequestedPosts = await body.number_of_posts;
   const loadedPosts = await body.loaded_posts;

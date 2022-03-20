@@ -1,19 +1,23 @@
 import { xml2js } from 'xml-js';
-import * as cookieParser from 'cookie-parser';
-
 import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
 
-
-
-
-
-export const get = async ({request}) => {
+export const post = async ({ request }) => {
   
+  const body = JSON.parse(await request.text());
+  const numberOfRequestedPosts = await body.number_of_posts;
+  const loadedPosts = await body.loaded_posts;
   const cookies = request.headers.get('cookie');
   const previousIds = await JSON.parse(getCookie(cookies, 'ids'));
   
-  const ids = previousIds || getIds();
-  const _ids = JSON.stringify(ids);
+  let ids;
+  let idString;
+  if (previousIds && !loadedPosts) {
+    ids = previousIds;
+    idString = JSON.stringify(previousIds)
+  } else {
+    ids = getIds(numberOfRequestedPosts, loadedPosts);
+    idString = previousIds ? JSON.stringify([ ...previousIds, ...ids]) : JSON.stringify(ids);
+  } 
   
   const posts = await ids.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;
@@ -32,7 +36,7 @@ export const get = async ({request}) => {
     return posts;
   }, []);
 
-  if (previousIds) {
+  if (previousIds && !loadedPosts) {
     return {
       status: 200,
       body: {
@@ -44,7 +48,7 @@ export const get = async ({request}) => {
     return {
       status: 200,
       headers: {
-        'Set-Cookie': `ids=${_ids}; SameSite=Strict; HttpOnly; Secure; path=/`
+        'Set-Cookie': `ids=${idString}; SameSite=Strict; HttpOnly; Secure; path=/`
       },
       body: {
         posts,
@@ -52,6 +56,5 @@ export const get = async ({request}) => {
       }
     };
   }
-
 
 }

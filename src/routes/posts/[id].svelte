@@ -42,7 +42,7 @@
 
 </script>
 
-<article>
+<main>
     
   <header>
     <h1>{post.title}</h1>
@@ -104,10 +104,10 @@
   <span class="divider" aria-hidden="true"></span>
   
 
-</article>
+</main>
 
 <style>
-article {
+main {
     width: 100%;
     padding: 1em;
     display: flex;

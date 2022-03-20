@@ -1,6 +1,6 @@
-export function getRelated (relation = {}) {
+export function getRelated (relation) {
   let relatedPosts = [];
-  
+
   if (relation && relation.length) {
     relation.forEach(post => {
       relatedPosts.push({
@@ -8,14 +8,14 @@ export function getRelated (relation = {}) {
         id: getIdFromUrl(post.URLOfRelation._text)
       })
     })
-  } else {
+  } else if (relation) {
     relatedPosts.push({
       title: relation.NameOfRelation._text || "",
       id: getIdFromUrl(relation.URLOfRelation._text) || ""
     })
   }
   
-  return relatedPosts  
+  return relatedPosts;  
 
 };
 
@@ -45,14 +45,22 @@ export function getDescription (obj = {}, param = { truncated: false}) {
 
 const MAX_NUM_OF_IDS = 101000;
 const ID_LENGTH = 6;
-export function getIds (count=10) {
+
+export function getIds (count=10, unavailableIds=[]) {
   const ids = new Array();
+  const randomNumber = () => Math.floor(Math.random() * (MAX_NUM_OF_IDS - 1) + 1).toString();
+  const getRandomId = () => addZeroes(randomNumber());
+
   for (let i = 0; i < count; i++) {
-    ids.push(Math.floor(Math.random() * (MAX_NUM_OF_IDS - 1) + 1).toString())
+    const newId = getRandomId();
+    if (isUnavailable(newId, unavailableIds)) {
+      i--;
+    } else {
+      ids.push(newId);
+      unavailableIds.push(newId);
+    }
   };
-  ids.forEach((id, i) => {
-    ids[i] = addZeroes(id);
-  });
+
   return ids;
 };
 
@@ -66,6 +74,10 @@ function addZeroes (id=1) {
   };
   return `${zeroes.join('')}${id}`;
 };
+
+function isUnavailable (id='000001', unavailableIds=[]) {
+  return unavailableIds.includes(unavailableId => unavailableId === id);
+}
 
 const CHAR_LIMIT = 140; 
 function truncateDesc (str="") {

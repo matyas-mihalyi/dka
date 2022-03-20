@@ -120,6 +120,23 @@
   main {
     min-height: 100vh;
   }
+
+  main > button {
+    display: block;
+    padding: 1em;
+    border-radius: 0.25em;
+    border: none;
+    box-shadow: inset 0 0 0 0.0625em #ddd;
+    background-color: #eeeeee;
+    margin: 1em auto;
+    display: flex;
+    align-items: center;
+  }
+
+  main > button > i {
+    font-size: 1.5rem;
+    margin-right: 0.5em;
+  }
 </style>
 
 <main class="container">
@@ -128,6 +145,7 @@
   {/each}
   {#if limitReached()}
   <button on:click={loadNewPosts}>
+    <i class="ri-refresh-line"></i>
     Új posztok betöltése
   </button>
   {/if}

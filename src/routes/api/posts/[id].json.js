@@ -15,7 +15,7 @@ export const get = async ({params, request}) => {
 
   // console.log(id)
   // console.log(xml.dkalista.DKA.date)
-  // console.log(xml.dkalista.DKA)
+  // console.log(xml.dkalista.DKA.original_document)
 
   const img = getPictureUrl(await xml.dkalista.DKA.identifier.Filename._text, await xml.dkalista.DKA.identifier.URLOfDoc._text);
   const title = await xml.dkalista.DKA.DKAtitle.MainTitle._text; 

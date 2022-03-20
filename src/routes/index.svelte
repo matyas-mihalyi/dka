@@ -30,23 +30,23 @@
   
   loadedPostIds.set(ids);
   
-  // console.log("feed is at beginning ")
-  // console.log($feed)
-
+  console.log("feed is at beginning ")
+  console.log($feed.length)
+  
   let limit = INITIAL_POSTS;
-
+  
   $: limitReached = () => {
     return MAX_POSTS <= $feed.length;
   };
-
+  
   //intersection obs
-
+  
   onMount(() => {
-    if (browser && document.querySelector('footer')) {
+    if (browser && document.querySelector('article')) {
       const handleIntersect = (entries, observer) => {
         entries.forEach((entry) => {
-          console.log(limitReached());
           if (limitReached()) {
+            console.log("Limit reached");
             observer.unobserve(entry.target);
           }
           showMorePosts();
@@ -54,7 +54,7 @@
       };
       const options = { threshold: 0.25, rootMargin: '-100% 0% 100%' };
       const observer = new IntersectionObserver(handleIntersect, options);
-      observer.observe(document.querySelector('footer'));
+      observer.observe(document.querySelector('article:last-of-type'));
     }
   });
 
@@ -69,8 +69,10 @@
         limit = newLimit;
       } else {
         const newPosts = await loadPosts(ADDITONAL_POSTS_TO_FETCH);
+        console.log('fetched new posts')
         feed.set([...$feed, ...newPosts.posts]);
-
+        console.log($feed.length)
+        
         limit = newLimit;
       }
       

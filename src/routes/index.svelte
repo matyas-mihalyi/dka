@@ -1,9 +1,8 @@
 <script context="module">
+  import { INITIAL_POSTS } from '$lib/config/homefeed';
   
   export async function load ({fetch}) {
-    const NUMBER_OF_INITIAL_POSTS = 10; 
-
-    const apiRequestBody = JSON.stringify({number_of_posts: NUMBER_OF_INITIAL_POSTS})
+    const apiRequestBody = JSON.stringify({number_of_posts: INITIAL_POSTS})
 
     const res = await fetch(`/api/posts.json`, { method: 'POST', body: apiRequestBody});
     const {posts, ids} = await res.json();
@@ -20,15 +19,12 @@
 <script>
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
-  import Post from '$lib/components/Post.svelte'
-  import { feed, loadedPostIds } from '$lib/components/stores/posts'
+  import Post from '$lib/components/Post.svelte';
+  import { feed, loadedPostIds } from '$lib/components/stores/posts';
+  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS } from '$lib/config/homefeed';
+
   export let posts;
   export let ids;
-
-  const INITIAL_POSTS = 10;
-  const ADDITONAL_POSTS_TO_FETCH = 10;
-  const MAX_STORED_POSTS = 10;
-  const MAX_POSTS = 20;
 
   feed.set(posts);
 
@@ -65,7 +61,7 @@
   $: showMorePosts;
   async function showMorePosts() {
     try {
-      const newLimit = limit + 4;
+      const newLimit = limit + LIMIT_STEP;
 
       if (newLimit <= $feed.length) {
         // load more images from store

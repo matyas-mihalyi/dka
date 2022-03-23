@@ -19,7 +19,7 @@
 <script>
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
-  import Post from '$lib/components/Post.svelte';
+  import Post from '$lib/components/Post/Post.svelte';
   import { feed, loadedPostIds } from '$lib/components/stores/posts';
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS } from '$lib/config/homefeed';
 

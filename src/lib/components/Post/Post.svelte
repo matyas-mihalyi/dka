@@ -24,17 +24,29 @@
         }
       }">
         <i class="ri-heart-3-fill"></i>
+        <span>Mentve</span>
       </button>
-    {:else}  
-    <button on:click="{()=> {
-      savePost(post.id);
-      saved.set(true);
+      {:else}  
+      <button on:click="{()=> {
+        savePost(post.id);
+        saved.set(true);
       }
     }">
         <i class="ri-heart-3-line"></i>
+        <span>Mentés</span>
       </button>
     {/if}
-    <a href={`/posts/${post.id}`}>Részletek &#8594</a>
+
+    <button>
+      <i class="ri-share-line"></i>
+      <span>Megosztás</span>
+    </button>
+
+    <a class="button" href={`/posts/${post.id}`}>
+      <i class="ri-arrow-right-line"></i>
+      <span>Részletek</span>
+    </a>
+
   </section>
 </article>
 
@@ -42,7 +54,7 @@
 
   article {
     width: 100%;
-    padding: 1em;
+    padding: 1.5em 1em 1em 1em;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -66,13 +78,33 @@
     align-items: center;
   }
 
-  section.button-wrapper > button {
-    border: none;
-    background-color: transparent;
+  section.button-wrapper {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1em;
   }
 
-  section.button-wrapper > button > i {
+  section.button-wrapper > button, 
+  section.button-wrapper > .button {
+    border: none;
+    background-color: transparent;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  section.button-wrapper > button > i,
+  section.button-wrapper > .button > i {
     font-size: 1.5rem;
   }
+  
+  section.button-wrapper > button > span,
+  section.button-wrapper > .button > span {
+    font-size: 0.625rem;
+  }
+
+   
 
 </style>

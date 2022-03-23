@@ -1,14 +1,16 @@
 import { getCookie } from './api/utils';
 
-export const del = async ({request}) => {
-  const postToBeDeleted = await request.text();
-
+export const put = async ({request}) => {
+  
+  const postToDelete = await request.text();
   const cookies = await request.headers.get('cookie');
-  const savedPosts = await JSON.parse(getCookie(await cookies, 'savedPosts')) || [];
+  let savedPosts = await JSON.parse(getCookie(await cookies, 'savedPosts')) || [];
 
-  const remainingPosts = savedPosts.filter(post => post !== postToBeDeleted);
-
-  const cookieValue = JSON.stringify(remainingPosts);
+  if (savedPosts.includes(postToDelete)) {
+    const newPosts = savedPosts.filter(post => post !== postToDelete)
+    savedPosts = newPosts;
+  }
+  const cookieValue = JSON.stringify(savedPosts);
 
   const date = new Date();
 

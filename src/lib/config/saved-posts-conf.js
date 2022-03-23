@@ -1,0 +1,1 @@
+export const MAX_POSTS_IN_COOKIES = 10;

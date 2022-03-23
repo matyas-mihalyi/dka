@@ -27,7 +27,7 @@
 </script>
 
 <script>
-  import Post from '$lib/components/Post.svelte'
+  import Post from '$lib/components/Post/Post.svelte'
   import Loading from '$lib/components/Loading/Loading.svelte'
   export let posts;
   export let loading;

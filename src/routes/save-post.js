@@ -1,16 +1,18 @@
 import { getCookie } from './api/utils';
+import { MAX_POSTS_IN_COOKIES } from '$lib/config/saved-posts-conf'
 
 export const put = async ({request}) => {
 
-  console.log("save")
-
-
   const newSavedPost = await request.text();
-
   const cookies = await request.headers.get('cookie');
   const savedPosts = await JSON.parse(getCookie(await cookies, 'savedPosts')) || [];
 
-  savedPosts.push(newSavedPost);
+  if (savedPosts.length >= MAX_POSTS_IN_COOKIES) {
+    savedPosts.shift();
+    savedPosts.unshift(newSavedPost);
+  } else {
+    savedPosts.unshift(newSavedPost);
+  }
 
   const cookieValue = JSON.stringify(savedPosts);
 

@@ -21,6 +21,7 @@
   import { browser } from '$app/env';
   import Post from '$lib/components/Post/Post.svelte';
   import { feed, loadedPostIds } from '$lib/components/stores/posts';
+  import { updateStore } from '$lib/components/stores/saved-posts'
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS } from '$lib/config/homefeed';
 
   export let posts;
@@ -56,6 +57,9 @@
       const observer = new IntersectionObserver(handleIntersect, options);
       observer.observe(document.querySelector('article:last-of-type'));
     }
+    
+    //update savedPostsstore
+    updateStore()
   });
 
   $: showMorePosts;
@@ -147,10 +151,10 @@
     <Post post={post} />
   {/each}
   {#if limitReached()}
-  <button on:click={loadNewPosts}>
-    <i class="ri-refresh-line"></i>
-    Új posztok betöltése
-  </button>
+    <button on:click={loadNewPosts}>
+      <i class="ri-refresh-line"></i>
+      Új képek betöltése
+    </button>
   {/if}
 </main>
 

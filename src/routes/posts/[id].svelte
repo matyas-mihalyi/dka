@@ -18,15 +18,21 @@
 
 <script>
   import { onMount } from 'svelte';
-  import { savePost, deleteSavedPost, saved, updateStore } from '../posts/utils';  
+  import { savePost, deleteSavedPost, saved, updateStore, sharePost } from '../posts/utils';  
   import { writable } from "svelte/store";
-  import ImageLoader from '$lib/components/Image/ImageLoader.svelte'
+  import ImageLoader from '$lib/components/Image/ImageLoader.svelte';
   
   export let post;
 
+  let shareData
   onMount(()=> {
     updateStore();
-  }); 
+    shareData = {
+      title: `${post.title}`,
+      text: `${post.title}`,
+      url: `${window.location}`
+    };
+  });
   
   const isSaved = writable(saved(post.id));
 
@@ -60,21 +66,23 @@
     {#if $isSaved}
     <button on:click="{del(post.id)}">
       <i class="ri-heart-3-fill"></i>
+      <span>Mentve</span>
     </button>
     {:else}  
     <button on:click="{save(post.id)}">
       <i class="ri-heart-3-line"></i>
+      <span>Mentés</span>
     </button>
     {/if}
     
-    <button >
-      <i class="ri-whatsapp-line"></i>
+    <button on:click="{()=> sharePost(shareData)}">
+      <i class="ri-share-line"></i>
+      <span>Megosztás</span>
     </button>
+    
     <button >
-      <i class="ri-twitter-line"></i>
-    </button>
-    <button >
-      <i class="ri-more-fill"></i>
+      <i class="ri-download-fill"></i>
+      <span>Letöltés</span>
     </button>
     
   </section>
@@ -140,10 +148,19 @@ main {
   section.button-wrapper > button {
     border: none;
     background-color: transparent;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
   }
 
   section.button-wrapper > button > i {
     font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  section.button-wrapper > button > span {
+    font-size: 0.625rem;
   }
 
   

@@ -117,6 +117,11 @@ main {
     gap: 1em;
   }
 
+  main > * {
+    width: 100%;
+    max-width: 100%;
+  }
+
   section {
     width: 100%;
     display: flex;
@@ -172,6 +177,8 @@ main {
 
   p {
     font-size: 0.8125rem;
+    max-width: 45ch;
+    overflow-wrap: break-word;
   }
   
   a {

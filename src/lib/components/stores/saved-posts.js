@@ -12,7 +12,11 @@ export const feed = writable([]);
 
 export function saveToStore (id="") {
   const saved = get(savedPosts);
-  savedPosts.set([id, ...saved])
+  if (saved) {
+    savedPosts.set([id, ...saved])
+  } else {
+    savedPosts.set([id])
+  }
 };
 
 export function deleteFromStore (id="") {

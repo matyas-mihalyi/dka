@@ -54,13 +54,17 @@
 
   article {
     width: 100%;
-    padding: 1.5em 1em 1em 1em;
+    padding: 1.5em 0 1em 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 1em;
     border-bottom: 1px solid #ccc;
+  }
+
+  article:first-child {
+    padding-top: 0;
   }
 
   h2 {

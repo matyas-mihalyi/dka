@@ -20,5 +20,9 @@ export function unSavePost (id="") {
 
 export function isSaved (id="") {
     const saved = getSavedPosts();
-    return saved.includes(id);
+    if (saved) {
+      return saved.includes(id);
+    } else {
+      return false;
+    }
 };

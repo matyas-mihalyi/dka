@@ -1,7 +1,4 @@
 <script context="module">
-
-  import { getSavedPosts } from '$lib/components/stores';
-
   
   export async function load ({fetch}) {
     const res = await fetch(
@@ -20,7 +17,7 @@
 </script>
 
 <script>
-  import Loading from '$lib/components/Loading/Loading.svelte'
+  import Message from '$lib/components/Message/Message.svelte'
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
   import Post from '$lib/components/Post/Post.svelte';
@@ -29,19 +26,40 @@
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS } from '$lib/config/homefeed';
 
   export let posts;
+
+  let noSavedItems = false;
+  const noSavedItemsMessage = {
+    title: "Még nincs mentett bejegyzésed",
+    text: "Böngéssz a főoldalon és ments el kedvenc bejegyzéseidet",
+    buttonData: {
+      text: "A főoldalra",
+      href: "/",
+      icon: "ri-arrow-left-line"
+    }
+  }
+
+  if ($feed.length === 0 && (!$savedPosts || $savedPosts.length === 0)) {
+    noSavedItems = true;
+  }
+
+
   // export let ids;
 
   feed.set(posts);
-    
+
   let limit = INITIAL_POSTS;
   
   $: limitReached = () => {
-    return $savedPosts.length === $feed.length;
+    if ($savedPosts) {
+      return $savedPosts.length === $feed.length;
+    }
   };
   
   //intersection obs
   onMount(() => {
-    if (browser && document.querySelector('footer')) { 
+    updateStore();
+
+    if (browser && $savedPosts && document.querySelector('footer')) { 
       const handleIntersect = (entries, observer) => {
         entries.forEach((entry) => {
           if (limitReached()) {
@@ -56,7 +74,6 @@
     }
     
     //update savedPostsstore
-    updateStore()
   });
 
   $: showMorePosts;
@@ -104,10 +121,14 @@
 
 </script>
 
-<!-- {#if loading}
-  <Loading />
-{:else} -->
-  {#each $feed?.slice(0, limit) as post}
-  <Post post={post} />
-  {/each}
-<!-- {/if} -->
+<main class=container>
+  
+  {#if noSavedItems}
+   <Message message={noSavedItemsMessage}/>   
+  {:else}
+    {#each $feed?.slice(0, limit) as post}
+      <Post post={post} />
+    {/each}
+  {/if}
+
+</main>

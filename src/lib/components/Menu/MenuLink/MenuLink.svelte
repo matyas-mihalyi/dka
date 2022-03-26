@@ -11,12 +11,18 @@
 <style>
   li {
     list-style: none;
-    padding: 0.5em 1em
+    padding: 1em 0;
+    text-align: right;
+  }
+
+  li:not(:last-child) {
+    border-bottom: 2px solid #ddd;
   }
 
   a {
     text-decoration: none;
     color: #000;
+    font-size: 1.25rem;
   }
 
 

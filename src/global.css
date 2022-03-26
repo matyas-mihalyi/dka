@@ -11,5 +11,9 @@ body {
 }
 
 main.container, footer {
+  padding: 4em 1em;
+}
+
+footer {
   padding: 1.5em 1em;
 }

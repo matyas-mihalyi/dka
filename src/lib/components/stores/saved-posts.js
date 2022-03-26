@@ -8,6 +8,8 @@ export function updateStore () { savedPosts.set(getSavedPosts()); };
 
 export const savedPosts = writable([]);
 
+export const feed = writable([]);
+
 export function saveToStore (id="") {
   const saved = get(savedPosts);
   savedPosts.set([id, ...saved])

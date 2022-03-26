@@ -42,7 +42,7 @@
 
 </script>
 
-<main>
+<main class="container">
     
   <header>
     <h1>{post.title}</h1>
@@ -109,7 +109,6 @@
 <style>
 main {
     width: 100%;
-    padding: 1em;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -177,7 +176,7 @@ main {
 
   p {
     font-size: 0.8125rem;
-    max-width: 45ch;
+    max-width: 45chgi;
     overflow-wrap: break-word;
   }
   

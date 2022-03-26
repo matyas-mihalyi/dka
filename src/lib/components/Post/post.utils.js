@@ -1,7 +1,5 @@
 import { get } from 'svelte/store';
 import { saveToStore, deleteFromStore, savedPosts, getSavedPosts } from '../stores/saved-posts';
-import { browser } from '$app/env';
-
 
 export function savePost (id="") {
   saveToStore(id);
@@ -26,3 +24,11 @@ export function isSaved (id="") {
       return false;
     }
 };
+
+export async function sharePost (shareData) {
+  try {
+    await navigator.share(shareData);
+  } catch(err) {
+    console.error(err)
+  }
+}

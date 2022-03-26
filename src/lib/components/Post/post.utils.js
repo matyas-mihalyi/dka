@@ -1,5 +1,7 @@
 import { get } from 'svelte/store';
 import { saveToStore, deleteFromStore, savedPosts, getSavedPosts } from '../stores/saved-posts';
+import { alertModal, closeModal } from '../Common/Alert/Alert.svelte';
+import { ALERT_DURATION, COPY_ALERT_MESSAGE } from '$lib/config/alerts';
 
 export function savePost (id="") {
   saveToStore(id);
@@ -26,9 +28,21 @@ export function isSaved (id="") {
 };
 
 export async function sharePost (shareData) {
-  try {
-    await navigator.share(shareData);
-  } catch(err) {
-    console.error(err)
+  if (navigator && navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch(err) {
+      console.error(err)
+    }
+  } else {
+    copyLink(shareData.url);
   }
+}
+
+function copyLink (text = "") {
+  navigator.clipboard.writeText(text)
+  alertModal(COPY_ALERT_MESSAGE);
+  setTimeout(()=> {
+    closeModal();
+  }, ALERT_DURATION)
 }

@@ -4,9 +4,20 @@
   export let post = {};
 
   import { writable } from 'svelte/store';
-  import { savePost, unSavePost, isSaved } from './post.utils';
+  import { savePost, unSavePost, isSaved, sharePost } from './post.utils';
+import { onMount } from "svelte";
 
-  const saved = writable(isSaved(post.id))
+  const saved = writable(isSaved(post.id));
+
+  let shareData
+  onMount(()=> {
+    shareData = {
+      title: `${post.title}`,
+      text: `${post.title}`,
+      url: `${window.location}posts/${post.id}`
+    }
+  });
+
 
 </script>
 
@@ -37,7 +48,7 @@
       </button>
     {/if}
 
-    <button>
+    <button on:click="{()=> sharePost(shareData)}">
       <i class="ri-share-line"></i>
       <span>Megosztás</span>
     </button>
@@ -102,6 +113,7 @@
   section.button-wrapper > button > i,
   section.button-wrapper > .button > i {
     font-size: 1.5rem;
+    margin-bottom: 0.125rem;
   }
   
   section.button-wrapper > button > span,

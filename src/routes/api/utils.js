@@ -23,6 +23,10 @@ export function getPictureUrl (filename = "", url = "") {
   return `${url}/${filename}`
 };
 
+export function getLargePictureUrl (path = "") {
+  return path.replace(/\.jpg$/, '_nagykep.jpg');
+};
+
 export function getDescription (obj = {}, param = { truncated: false}) {
   if (obj.description) {
     const keys = Object.keys(obj.description);

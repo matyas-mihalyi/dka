@@ -1,6 +1,6 @@
 import { xml2js } from 'xml-js';
 
-import { getPictureUrl, getDescription, getRelated, getCookie, isSaved } from '../utils';
+import { getPictureUrl, getLargePictureUrl, getDescription, getRelated, getCookie, isSaved } from '../utils';
 
 export const get = async ({params, request}) => {
   const { id } = await params;
@@ -16,8 +16,10 @@ export const get = async ({params, request}) => {
   // console.log(id)
   // console.log(xml.dkalista.DKA.date)
   // console.log(xml.dkalista.DKA.original_document)
+  // console.log(xml.dkalista.DKA)
 
   const img = getPictureUrl(await xml.dkalista.DKA.identifier.Filename._text, await xml.dkalista.DKA.identifier.URLOfDoc._text);
+  const largeImg = getLargePictureUrl(img);
   const title = await xml.dkalista.DKA.DKAtitle.MainTitle._text; 
   const description = getDescription(await xml.dkalista.DKA);
   const related = getRelated(await xml.dkalista.DKA.relation);
@@ -28,10 +30,11 @@ export const get = async ({params, request}) => {
 
   const post = {
     id,
+    img,
+    largeImg,
     saved,
     title,
     description,
-    img,
     related,
     originalUrl,
     src,

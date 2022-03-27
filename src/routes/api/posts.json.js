@@ -1,5 +1,5 @@
 import { xml2js } from 'xml-js';
-import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
+import { getPictureUrl, getLargePictureUrl, getDescription, getIds, getCookie } from './utils';
 
 export const post = async ({ request }) => {
   
@@ -25,8 +25,11 @@ export const post = async ({ request }) => {
     if (res.ok) {
       const text = await res.text();
       const js = xml2js(text, {compact: true});
+
+      const img = getPictureUrl(js.dkalista.DKA.identifier.Filename._text, js.dkalista.DKA.identifier.URLOfDoc._text);
       const post = {
-        img: getPictureUrl(js.dkalista.DKA.identifier.Filename._text, js.dkalista.DKA.identifier.URLOfDoc._text),
+        img: img,
+        largeImg: getLargePictureUrl(img),
         title: js.dkalista.DKA.DKAtitle.MainTitle._text,
         description: getDescription(js.dkalista.DKA, { truncated: true}),
         id: id

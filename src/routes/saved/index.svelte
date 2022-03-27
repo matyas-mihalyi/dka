@@ -38,11 +38,13 @@
     }
   }
 
-  if ($feed.length === 0 && (!$savedPosts || $savedPosts.length === 0)) {
+  $: $savedPosts, checkForSavedPosts();
+
+  function checkForSavedPosts () {
+    if ($feed.length === 0 && (!$savedPosts || $savedPosts.length === 0)) {
     noSavedItems = true;
+   }
   }
-
-
   // export let ids;
 
   feed.set(posts);

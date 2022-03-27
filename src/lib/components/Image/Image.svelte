@@ -1,6 +1,7 @@
 <script>
   export let src
   export let alt
+  export let link
 
   import { onMount } from 'svelte'
 
@@ -17,7 +18,13 @@
 {#if !loaded} 
   <div class="placeholder"></div>
 {/if}
-<img {src} {alt} class:loaded bind:this={thisImage} loading="lazy"/>
+{#if link}
+<a href="{link}" target="_blank">
+  <img {src} {alt} class:loaded bind:this={thisImage} loading="lazy"/>
+</a>
+{:else}
+  <img {src} {alt} class:loaded bind:this={thisImage} loading="lazy"/>
+{/if}
 
 
 <style>

@@ -72,6 +72,7 @@ import { onMount } from "svelte";
     align-items: center;
     gap: 1em;
     border-bottom: 1px solid #ccc;
+    min-height: 30vh;
   }
 
   article:first-child {

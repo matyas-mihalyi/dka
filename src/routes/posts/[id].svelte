@@ -20,7 +20,7 @@
   import { onMount } from 'svelte';
   import { savePost, deleteSavedPost, saved, updateStore, sharePost } from '../posts/utils';  
   import { writable } from "svelte/store";
-  import ImageLoader from '$lib/components/Image/ImageLoader.svelte';
+  import Image from '$lib/components/Image/Image.svelte';
   
   export let post;
 
@@ -55,7 +55,7 @@
     <a href="/" title="Vissza a főoldalra"><i class="ri-arrow-left-s-line"></i></a>
   </header>
 
-  <ImageLoader src={post.img} alt={`${post.title} kép`}/>
+  <Image src={post.img} alt={`${post.title}`} link={post.largeImg}/>
   <p>{@html post.description}</p>
 
   <span class="divider" aria-hidden="true"></span>
@@ -78,11 +78,6 @@
     <button on:click="{()=> sharePost(shareData)}">
       <i class="ri-share-line"></i>
       <span>Megosztás</span>
-    </button>
-    
-    <button >
-      <i class="ri-download-fill"></i>
-      <span>Letöltés</span>
     </button>
     
   </section>

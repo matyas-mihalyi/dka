@@ -47,35 +47,37 @@
 
 <svelte:window bind:scrollY="{y}"/>
 
-<div role="navigation" class:hidden={hidden}>
-
-  <a class="logo" href="/">
-    <Icon 
-      name={"dark"} 
-      width={isMobile ? "1.5rem" : "2.5rem"}
-      height={isMobile ? "1.5rem" : "2.5rem"}  
-    />
-    <span>
-      {PROJECT_NAME}
-    </span>
-  </a>
+<header>
+  <div role="navigation" class:hidden={hidden}>
   
-  <button on:click="{toggleMenu}">
+    <a class="logo" href="/">
+      <Icon 
+        name={"dark"} 
+        width={isMobile ? "1.5rem" : "2.5rem"}
+        height={isMobile ? "1.5rem" : "2.5rem"}  
+      />
+      <span>
+        {PROJECT_NAME}
+      </span>
+    </a>
+    
+    <button on:click="{toggleMenu}">
+      {#if isOpen}
+      <i class="ri-close-line"></i>
+      {:else}
+      <i class="ri-menu-line"></i>
+    {/if}
+    </button>
+    
     {#if isOpen}
-    <i class="ri-close-line"></i>
-    {:else}
-    <i class="ri-menu-line"></i>
-  {/if}
-  </button>
+    <nav transition:slide>
+      <ul role="menubar">
+        {#each menuItems as menuItem}
+          <MenuLink {menuItem} />
+        {/each}
+      </ul>
+    </nav>
+    {/if}
   
-  {#if isOpen}
-  <nav transition:slide>
-    <ul role="menubar">
-      {#each menuItems as menuItem}
-        <MenuLink {menuItem} />
-      {/each}
-    </ul>
-  </nav>
-  {/if}
-
-</div>
+  </div>
+</header>

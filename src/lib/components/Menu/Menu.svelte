@@ -17,6 +17,9 @@
     if (window.innerWidth > 600) {
       isMobile = false;
       isOpen = true;
+    } else {
+      isMobile = true;
+      isOpen = false;
     }
   }
 
@@ -27,6 +30,8 @@
   let lastY = 0;
 
   onMount(()=> {
+    checkScreenWidth();
+
     window.onscroll = () => {
       let y = window.scrollY;
       if(y < lastY) {
@@ -35,10 +40,12 @@
         hidden = true;
       }
       lastY = y;
-    }; 
-    checkScreenWidth();
-  });
+    };
+
+    window.onresize = () => checkScreenWidth();
   
+  });
+
 </script>
 
 <style lang="less">

@@ -1,4 +1,20 @@
+<style lang="less">
+  @import './Footer';
+</style>
+
 <footer>
-  <h2>This is a footer</h2>
-  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iusto at exercitationem, quaerat nisi itaque minus qui officia a praesentium odit veritatis! Non necessitatibus doloremque numquam, cupiditate ullam iure corrupti totam eveniet qui sapiente dignissimos, aliquid praesentium quia molestiae asperiores placeat!</p>
+  <ul>
+    <li>
+      <a href="https://dka.oszk.hu/" target="_blank">A DKA hivatalos oldala</a>
+    </li>
+    <li>
+      <a href="https://dka.oszk.hu/export/xml_/" target="_blank">Adatbázis</a>
+    </li>
+    <li>
+      <a href="https://github.com/matyas-mihalyi/dka" target="_blank">Github</a>
+    </li>
+    <li>
+      <a href="https://github.com/matyas-mihalyi" target="_blank">Az oldal készítője</a>
+    </li>
+  </ul>
 </footer>

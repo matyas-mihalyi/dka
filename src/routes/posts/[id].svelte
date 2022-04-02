@@ -35,7 +35,7 @@
   });
   
   const isSaved = writable(saved(post.id));
-
+  
   function save (id="") {
     savePost(id)
     isSaved.set(true);
@@ -45,20 +45,28 @@
     deleteSavedPost(id);
     isSaved.set(false);
   };
-
+  
 </script>
+
+<style lang="less">
+  @import './Post';
+</style>
 
 <main class="container">
     
   <header>
     <h1>{post.title}</h1>
-    <a href="/" title="Vissza a főoldalra"><i class="ri-arrow-left-s-line"></i></a>
+    <a href="/" title="Vissza a főoldalra">
+      <i class="ri-arrow-left-line"></i>
+    </a>
   </header>
 
   <Image src={post.img} alt={`${post.title}`} link={post.largeImg}/>
-  <p>{@html post.description}</p>
 
-  <span class="divider" aria-hidden="true"></span>
+  {#if post.description}
+    <p>{@html post.description}</p>
+  {/if}
+
   
   <section class="button-wrapper">
     
@@ -80,10 +88,7 @@
       <span>Megosztás</span>
     </button>
     
-  </section>
-  
-  <span class="divider" aria-hidden="true"></span>
-  
+  </section>  
   
   <section>
     <p>Forrás</p>
@@ -103,116 +108,7 @@
     </div>
   </section>
   
-  <a href={post.originalUrl}>Megtekintés a DKA oldalán</a>
-  <span class="divider" aria-hidden="true"></span>
+  <a href={post.originalUrl}>Megtekintés a DKA oldalán <i class="ri-external-link-line"></i> </a>
   
 
 </main>
-
-<style>
-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1em;
-  }
-
-  main > * {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  section {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  section > p {
-    font-weight: 500;
-  }
-
-  section.button-wrapper {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 0.75em;
-  }
-  
-  section.button-wrapper > button {
-    border: none;
-    background-color: transparent;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  section.button-wrapper > button > i {
-    font-size: 1.5rem;
-    margin-bottom: 0.25rem;
-  }
-
-  section.button-wrapper > button > span {
-    font-size: 0.625rem;
-  }
-
-  
-  
-  h1 {
-    font-size: 1.125rem;
-    text-align: center;
-    flex-grow: 1;
-  }
-
-  header {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  header > a {
-    text-decoration: none;
-    margin-right: 0.25em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  header > a > i {
-    font-size: 1.5rem;
-  }
-
-  p {
-    font-size: 0.8125rem;
-    max-width: 45chgi;
-    overflow-wrap: break-word;
-  }
-  
-  a {
-    font-size: 0.8125rem;
-    color: #444;
-    display: inline;
-    align-items: center;
-  }
-
-  span.divider{
-    width: 100%;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  section > div.link-wrapper {
-    margin-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  div.link-wrapper > a {
-    text-align: end;
-  }
-  
-  </style>

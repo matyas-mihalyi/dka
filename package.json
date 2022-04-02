@@ -10,11 +10,12 @@
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
-    "svelte": "^3.44.0"
+    "less": "^4.1.2",
+    "svelte": "^3.44.0",
+    "svelte-preprocess": "^4.10.4"
   },
   "type": "module",
   "dependencies": {
-    "cookie-parser": "^1.4.6",
     "remixicon": "^2.5.0",
     "xml-js": "^1.6.11"
   }

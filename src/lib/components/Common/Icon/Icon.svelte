@@ -19,7 +19,10 @@
   }
 
   let displayIcon = icons[name];
+
+
 </script>
+
 <svg
 {focusable}
 {width}

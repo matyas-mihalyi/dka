@@ -121,27 +121,8 @@
   }
 </script>
 
-<style>
-  main {
-    min-height: 100vh;
-  }
-
-  main > button {
-    display: block;
-    padding: 1em;
-    border-radius: 0.25em;
-    border: none;
-    box-shadow: inset 0 0 0 0.0625em #ddd;
-    background-color: #eeeeee;
-    margin: 1em auto;
-    display: flex;
-    align-items: center;
-  }
-
-  main > button > i {
-    font-size: 1.5rem;
-    margin-right: 0.5em;
-  }
+<style lang="less">
+  @import './Home.less';
 </style>
 
 <main class="container">

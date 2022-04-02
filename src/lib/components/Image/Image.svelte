@@ -10,6 +10,7 @@
 
   onMount(() => {
     thisImage.onload = () => {
+      console.log("loaded")
       loaded = true
     }
   }) 
@@ -20,31 +21,13 @@
 {/if}
 {#if link}
 <a href="{link}" target="_blank">
-  <img {src} {alt} class:loaded bind:this={thisImage} loading="lazy"/>
+  <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
 </a>
 {:else}
-  <img {src} {alt} class:loaded bind:this={thisImage} loading="lazy"/>
+  <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
 {/if}
 
 
-<style>
-  img {
-    object-fit: contain;
-    width: 100%;
-    height: auto;
-    border-radius: 0.075em;
-    opacity: 0;
-    transition: opacity 1200ms ease-out;   
-  }
-  
-  img.loaded { 
-    opacity: 1;
-  }
-
-  div.placeholder {
-    width: 100%;
-    height: calc(100vw - 2rem);
-    background-color: #eeeeee;
-  }
-  
+<style lang="less">
+  @import './Image.less';
 </style>

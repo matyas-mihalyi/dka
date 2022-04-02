@@ -1,0 +1,103 @@
+// layout
+@feed-width: clamp(300px, 100%, 900px);
+@header-width: clamp(300px, 100%, 1100px);
+@content-width: clamp(300px, 100%, 700px);
+
+// colours
+@ui-primary: #fff;
+@ui-secondary: #f7f7f7;
+@ui-tertiary: #cdcdcd;
+
+
+// typography
+@font-color-default: #000;
+@font-color-footer: #555;
+@font-family-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+
+//icons
+.default-icon() {
+  font-size: 1.5rem;
+  margin-bottom: 0.125rem;
+  
+  @media @gt-mobile {
+    font-size: 2.5rem;
+    margin-bottom: 0.25rem;
+  }
+} 
+
+.default-icon-clue () {
+  font-size: .625rem;
+  
+  @media @gt-mobile {
+    font-size: 0.75rem;
+  }
+}
+
+// default font
+.default-font() {
+  font-family: @font-family-default;
+  color: @font-color-default;
+  font-size: 0.875rem;
+  
+  @media @gt-mobile {
+    font-size: 1.125rem;
+  }
+};
+
+// headers
+.title-font() {
+  font-family: @font-family-default;
+  color: @font-color-default;
+  font-size: 1.125rem;
+  font-weight: bold;
+  
+  @media @gt-mobile {
+    font-size: 1.75rem;
+  }
+}
+
+// footer
+.footer-font() {
+  font-family: @font-family-default;
+  color: @font-color-footer;
+  font-size: 0.75rem;
+  
+  @media @gt-mobile {
+    font-size: 1rem;
+  }
+}
+
+//media queries
+
+/* Breakpoints */
+@breakpoint-xs: 360px;
+@breakpoint-sm: 600px;
+@breakpoint-md: 900px;
+@breakpoint-lg: 1200px;
+@breakpoint-xl: 1800px;
+
+@breakpoint-xs-minus-1: (@breakpoint-xs - 1);
+@breakpoint-sm-minus-1: (@breakpoint-sm - 1);
+@breakpoint-md-minus-1: (@breakpoint-md - 1);
+@breakpoint-lg-minus-1: (@breakpoint-lg - 1);
+@breakpoint-xl-minus-1: (@breakpoint-xl - 1);
+
+// Media Queries (greater than / less than / only)
+@gt-xs-mobile: ~'(min-width: @{breakpoint-xs})';
+@gt-mobile: ~'(min-width: @{breakpoint-sm})';
+@gt-tablet: ~'(min-width: @{breakpoint-md})';
+@gt-desktop: ~'(min-width: @{breakpoint-lg})';
+@gt-lg-desktop: ~'(min-width: @{breakpoint-xl})';
+
+@lt-mobile: ~'(max-width: @{breakpoint-xs-minus-1})';
+@lt-tablet: ~'(max-width: @{breakpoint-sm-minus-1})';
+@lt-desktop: ~'(max-width: @{breakpoint-md-minus-1})';
+@lt-lg-desktop: ~'(max-width: @{breakpoint-lg-minus-1})';
+@lt-xl-desktop: ~'(max-width: @{breakpoint-xl-minus-1})';
+
+@only-xs-mobile: @lt-mobile;
+@only-mobile: ~'@{gt-xs-mobile} and @{lt-tablet}';
+@only-tablet: ~'@{gt-mobile} and @{lt-desktop}';
+@only-desktop: ~'@{gt-tablet} and @{lt-lg-desktop}';
+@only-lg-desktop: ~'@{gt-desktop} and @{lt-xl-desktop}';
+@only-xl-desktop: @gt-lg-desktop;

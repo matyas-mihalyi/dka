@@ -1,0 +1,98 @@
+header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  background-color: @ui-secondary;
+  position: fixed;
+  transition: .3s;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, .1);
+}
+
+div[role="navigation"] {
+  background-color: @ui-secondary;
+  top: 0;
+  right: 0;
+  width: @header-width;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+button {
+  border-radius: 0.125em;
+  border: none;
+  padding: 1em;
+  display: block;
+  background-color: transparent;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+nav {
+  width: 100%;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 1.5em;
+}
+
+.hidden {
+  transform: translateY(calc(-100% - 5px));
+}
+
+a.logo {
+  .title-font();
+  flex: 1;
+  padding-left: 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  text-decoration: none;
+
+  span {
+    /* font-size: large; */
+    font-weight: 700;
+    color: #000;
+  }
+
+}
+
+
+
+@media @gt-mobile {
+  header {
+    position: fixed;
+    box-shadow: none;
+  }
+
+  div[role="navigation"] {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .hidden {
+    transform: none;
+  }
+
+  // hide hamburger
+  button {
+    display: none;
+  }
+
+  nav {
+    width: auto;
+  }
+
+  ul {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+}

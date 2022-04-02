@@ -11,9 +11,19 @@ body {
 }
 
 main.container, footer {
-  padding: 4em 1em;
+  padding: 0 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 600px) {
+  main.container {
+    padding-top: 5.5em;
+  }
 }
 
 footer {
   padding: 1.5em 1em;
 }
+

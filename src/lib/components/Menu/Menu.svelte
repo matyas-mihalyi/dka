@@ -47,8 +47,8 @@
 
 <svelte:window bind:scrollY="{y}"/>
 
-<header>
-  <div role="navigation" class:hidden={hidden}>
+<header class:hidden>
+  <div role="navigation">
   
     <a class="logo" href="/">
       <Icon 

@@ -1,38 +1,27 @@
-# create-svelte
+# DKA viewer
+##### A SvelteKit project built around Digitális Képarchívum's record of pictures
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+This project aims to bring you the fascinating collection of the National Széchényi Library in a more accessible, responsive format. You can view images and read additonal information provided by the library.
 
-## Creating a project
+## How does it work?
 
-If you're seeing this, you've probably already done this step. Congrats!
+Using SvelteKit endpoints, random records from the [public database](https://dka.oszk.hu/export/xml_/) are fetched.
+Unfortunately every post is stored in its own XML record. This makes it difficult to add search functionality or listing records by topics without too many requests.
+However, at a later point I would like to scrape the database and build my own API, which would solve these problems.
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+The fethced records are converted from XML to javascript objects with the [xml-js](https://www.npmjs.com/package/xml-js) npm package and some of their keys are exposed to the components.
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
+Posts can be saved to the bowser's local storage.
 
-> Note: the `@next` is temporary
+## Future plans for the project
 
-## Developing
+Additional features I would like to add:
+* unit and E2E tests
+* dark mode
+* image viewer with pinch zoom on mobile
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Running the project locally
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
-
-```bash
-npm run build
-```
-
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+1. fork the project
+2. run `npm install`
+3. run `npm run dev`

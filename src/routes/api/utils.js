@@ -1,17 +1,19 @@
 export function getRelated (relation) {
   let relatedPosts = [];
-
+  
   if (relation && relation.length) {
     relation.forEach(post => {
       relatedPosts.push({
         title: post.NameOfRelation._text,
-        id: getIdFromUrl(post.URLOfRelation._text)
+        url: getIdFromUrl(post.URLOfRelation._text),
+        external: checkRelatedUrl(post.URLOfRelation._text)
       })
     })
   } else if (relation) {
     relatedPosts.push({
       title: relation.NameOfRelation._text || "",
-      id: getIdFromUrl(relation.URLOfRelation._text) || ""
+      url: getIdFromUrl(relation.URLOfRelation._text) || "",
+      external: checkRelatedUrl(relation.URLOfRelation._text) || false
     })
   }
   
@@ -33,19 +35,82 @@ export function getDescription (obj = {}, param = { truncated: false}) {
     const description = keys.map(key => {
       return obj.description[key]._text
     })
-      .join("")
+      .join(" ")
       .replace(/\n/g, "<br>");
 
-    const truncated = truncateDesc(description);  
+    const descWithAnchorTag = getUrlFromDescription(description);  
+    const truncated = truncateDesc(descWithAnchorTag);  
     
     return param.truncated ?
       truncated
       :
-      description;
+      descWithAnchorTag;
   } else {
     return "";
   }
+
 };
+
+function getUrlFromDescription (str = "") {
+
+  let text = str;
+  const regex = /\bhttps?:\/\/[^\r\n\t\f\v \)]+/;
+  const containsUrl = regex.test(str);  
+  let url;
+  if (containsUrl) {
+    url = str.match(regex)[0] 
+    const anchorTag = createAnchorTag(url)
+    text = (str.replace(regex, anchorTag));
+  }
+
+  return text;
+  
+}
+
+function createAnchorTag (url = "") {
+  return `<a href="${url}" target="_blank">${url}</a>`
+}
+
+
+export function getOriginals (obj = {}) {
+  let originals = null;
+  
+  if (obj !== null) {
+    const keys = Object.keys(obj);
+    originals = [];
+    //get fields if field name is defined, else warn in console
+    const fields = keys.reduce((prev, key) => {
+      if (ORIGINAL_FIELDS.hasOwnProperty(key)) {
+        prev.push(getOriginalFieldValue(obj, key))
+      } else {
+        console.warn(`WARNING! \n undefined original field: \n '${key}'`)
+      }
+      return prev
+    }, []);
+
+    originals = fields;
+  }
+  return originals;
+}
+
+function getOriginalFieldValue (obj = {}, key = '') {
+  if (obj.hasOwnProperty(key) && ORIGINAL_FIELDS.hasOwnProperty(key)) {
+    const field = {
+      title: ORIGINAL_FIELDS[key],
+      text: obj[key]._text
+    };
+    return field;
+  }
+}
+
+const ORIGINAL_FIELDS = {
+  OriginalTitle: "Cím",
+  OriginalAttendance: "Megjelenés",
+  OriginalType: "Formátum",
+  Technology: "Technológia",
+  Location: "Helyszín",
+  OriginalCreator: "Szerző"
+}
 
 const MAX_NUM_OF_IDS = 101000;
 const ID_LENGTH = 6;
@@ -88,16 +153,19 @@ function truncateDesc (str="") {
   if (str.length < CHAR_LIMIT) {
     return str;
   }
-  const original = str.split("");
-  const truncated = original.slice(0, CHAR_LIMIT)
-  .join("");
-  return truncated + "...";
+  const cutoff = str.split("").findIndex((e,i)=> /\s/.test(e) && i > CHAR_LIMIT);
+	return str.split("").slice(0, cutoff).join("") + "...";
 };
 
 function getIdFromUrl (str = "") {
-  const id = str.replace(/.*\/(\d+)$/, "$1");
+  const id = str.replace(/.*(\/|id=)(\d+)$/, "$2");
   return id;
 };
+
+function checkRelatedUrl (str="") {
+  const isExternal = !/.*dka\.oszk/.test(str);
+  return isExternal;
+}
 
 export function getCookie(cookie, name)
 {

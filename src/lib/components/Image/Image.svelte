@@ -12,10 +12,19 @@
     thisImage.onload = () => {
       console.log("loaded")
       loaded = true
-    }
+    };
+    
+    if (thisImage.naturalWidth !== 0) {
+      loaded = true
+    };
   }) 
 
 </script>
+
+<style lang="less">
+  @import './Image.less';
+</style>
+
 {#if !loaded} 
   <div class="placeholder"></div>
 {/if}
@@ -28,6 +37,3 @@
 {/if}
 
 
-<style lang="less">
-  @import './Image.less';
-</style>

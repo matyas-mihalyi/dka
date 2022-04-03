@@ -90,25 +90,50 @@
     
   </section>  
   
+  <!-- forrás -->
+  {#if post.src}
   <section>
-    <p>Forrás</p>
+    <h5>Forrás</h5>
     {#if post.srcUrl}
-      <a href={post.srcUrl} target="_blank">{post.src}</a>
+    <a href={post.srcUrl} target="_blank">{post.src}</a>
     {:else}
-      <p>{post.src}</p> 
+    <p>{post.src}</p> 
     {/if}
   </section>
-
+  {/if}
+  
+  <!-- kapcsolódó -->
+  {#if post.related}
   <section>
-    <p>Kapcsolódó</p>
+    <h5>Kapcsolódó</h5>
     <div class="link-wrapper">
       {#each post.related as post}
-        <a href={`/posts/${post.id}`}>{post.title}</a>
+      {#if post.external}
+      <a href={post.url} target="_blank">
+        {post.title}
+        <i class="ri-external-link-line"></i>
+      </a>
+      {:else}
+      <a href={post.url}>{post.title}</a>
+      {/if}
       {/each}
     </div>
   </section>
+  {/if}
+  
+  <!-- originals -->
+  {#if post.originals}
+  <section class="original-data">
+    <h5>Eredeti adatok</h5>
+    <dl>
+      {#each post.originals as field}
+        <dt>{field.title}</dt>      
+        <dd>{field.text}</dd>      
+      {/each}
+    </dl>
+  </section>
+  {/if}
   
   <a href={post.originalUrl}>Megtekintés a DKA oldalán <i class="ri-external-link-line"></i> </a>
   
-
 </main>

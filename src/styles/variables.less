@@ -11,6 +11,7 @@
 
 // typography
 @font-color-default: #000;
+@font-color-link: #333;
 @font-color-footer: #555;
 @font-family-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 
@@ -53,6 +54,17 @@
   
   @media @gt-mobile {
     font-size: 1.75rem;
+  }
+}
+
+.subtitle-font () {
+  font-family: @font-family-default;
+  color: @font-color-default;
+  font-size: 0.875rem;
+  font-weight: bold;
+  
+  @media @gt-mobile {
+    font-size: 1.125rem;
   }
 }
 

@@ -1,4 +1,4 @@
-import { getCookie } from './api/utils';
+import { getCookie } from '../lib/utilss';
 import { MAX_POSTS_IN_COOKIES } from '$lib/config/saved-posts-conf'
 
 export const put = async ({request}) => {

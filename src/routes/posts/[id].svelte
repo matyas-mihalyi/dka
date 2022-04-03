@@ -21,7 +21,12 @@
   import { savePost, deleteSavedPost, saved, updateStore, sharePost } from '../posts/utils';  
   import { writable } from "svelte/store";
   import Image from '$lib/components/Image/Image.svelte';
-  
+  import { page } from '$app/stores';
+  import Seo from '$lib/components/Common/Seo.svelte';
+
+  console.log($page.url.href)
+
+
   export let post;
 
   let shareData
@@ -51,6 +56,11 @@
 <style lang="less">
   @import './Post';
 </style>
+
+<Seo
+  title={post.title}
+  description={}
+/>
 
 <main class="container">
     

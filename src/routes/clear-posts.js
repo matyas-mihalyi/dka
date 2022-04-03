@@ -1,4 +1,4 @@
-import { getCookie } from './api/utils';
+import { getCookie } from '../lib/utilss';
 
 export const del = async ({request}) => {
   console.log('clear-posts ran')

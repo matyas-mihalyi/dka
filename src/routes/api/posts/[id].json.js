@@ -7,7 +7,7 @@ import {
   getCookie,
   isSaved,
   getLargePictureUrl,
-  getOriginals } from '../../../lib/utils/lib/utils';
+  getOriginals } from '$lib/utils';
 
 export const get = async ({params, request}) => {
   const { id } = await params;

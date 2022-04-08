@@ -4,16 +4,16 @@ export const ADDITONAL_POSTS_TO_FETCH = 10;
 export const MAX_STORED_POSTS = 10;
 export const MAX_POSTS = 40;
 
-const TITLE = `Főoldal`
-const META_DESCRIPTION = "Egy felhasználóbarát felület a Digitális Képarchívum böngészéséhez."
+const TITLE = `Mentett képek`;
+const META_DESCRIPTION = "Ments el kedvenc képeid a Digitális Képarchívumról.";
 const TYPE = "website"
 
-export const HOMEFEED_SEO = {
+
+export const SAVEDFEED_SEO = {
   title: TITLE,
   description: META_DESCRIPTION,
   contentType: TYPE,
   image: {
-    alt: "..."
+    alt: "DKA logo"
   }
-
 }

@@ -17,27 +17,23 @@
 </script>
 
 <script>
-  import { onMount } from 'svelte';
-  import { savePost, deleteSavedPost, saved, updateStore, sharePost } from '../posts/utils';  
+  import { onMount } from 'svelte/internal';
+  import { savePost, deleteSavedPost, saved, updateStore, sharePost, } from '../posts/utils';  
   import { writable } from "svelte/store";
   import Image from '$lib/components/Image/Image.svelte';
   import { page } from '$app/stores';
-  import Seo from '$lib/components/Common/Seo.svelte';
+  import Seo from '$lib/components/Common/Seo/Seo.svelte';
+  import { truncateDesc } from '$lib/utils';
 
-  console.log($page.url.href)
-
+  onMount(()=> updateStore())
 
   export let post;
 
-  let shareData
-  onMount(()=> {
-    updateStore();
-    shareData = {
-      title: `${post.title}`,
-      text: `${post.title}`,
-      url: `${window.location}`
-    };
-  });
+  const shareData = {
+    title: `${post.title}`,
+    text: `${post.title}`,
+    url: `${$page.url.href}`
+  };
   
   const isSaved = writable(saved(post.id));
   
@@ -59,7 +55,10 @@
 
 <Seo
   title={post.title}
-  description={}
+  description={truncateDesc(post.description)}
+  url={$page.url.href}
+  contentType={'article'}
+  image={{ url: post.img, alt: post.title}}
 />
 
 <main class="container">

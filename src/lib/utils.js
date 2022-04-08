@@ -149,7 +149,7 @@ function isUnavailable (id='000001', unavailableIds=[]) {
 }
 
 const CHAR_LIMIT = 140; 
-function truncateDesc (str="") {
+export function truncateDesc (str="") {
   if (str.length < CHAR_LIMIT) {
     return str;
   }

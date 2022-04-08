@@ -1,5 +1,3 @@
-import { getCookie } from './api/utils';
-
 export const del = async ({request}) => {
   console.log('clear-posts ran')
   const postToBeDeleted = await request.text();

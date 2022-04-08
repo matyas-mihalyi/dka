@@ -17,15 +17,22 @@
 </script>
 
 <script>
+  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS, HOMEFEED_SEO } from '$lib/config/homefeed';
+  import { LOGO_PATH } from '$lib/config/general';
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
-  import Post from '$lib/components/Post/Post.svelte';
   import { feed, loadedPostIds } from '$lib/components/stores/posts';
   import { updateStore } from '$lib/components/stores/saved-posts'
-  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS } from '$lib/config/homefeed';
+  import Post from '$lib/components/Post/Post.svelte';
+  import Seo from '$lib/components/Common/Seo/Seo.svelte';
+  import { page } from '$app/stores';
 
   export let posts;
   export let ids;
+
+  const {title, description, contentType, image } = HOMEFEED_SEO;
+  const url = $page.url.href;
+  image.url = `${url}${LOGO_PATH}`;
 
   feed.set(posts);
   
@@ -137,3 +144,10 @@
   {/if}
 </main>
 
+<Seo 
+  {title}
+  {description}
+  {url}
+  {contentType}
+  {image}
+/>

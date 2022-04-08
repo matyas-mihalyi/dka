@@ -1,5 +1,5 @@
 import { xml2js } from 'xml-js';
-import { getPictureUrl, getDescription, getIds, getCookie } from './utils';
+import { getPictureUrl, getDescription, getIds, getCookie } from '$lib/utils';
 
 export const post = async ({ request }) => {
   

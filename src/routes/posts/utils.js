@@ -1,8 +1,8 @@
 import { savedPosts } from "$lib/components/stores";
-import {writable} from 'svelte/store';
 import { browser } from "$app/env";
 
-export { sharePost } from '$lib/components/Post/post.utils'
+export { sharePost } from '$lib/components/Post/post.utils';
+export { truncateDesc } from '$lib/utils';
 
 const getSavedPosts = () => browser ? JSON.parse(window.localStorage.getItem("savedPosts")) : "problémaaaaa";
 

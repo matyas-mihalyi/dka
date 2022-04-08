@@ -17,17 +17,26 @@
 </script>
 
 <script>
+  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS, SAVEDFEED_SEO } from '$lib/config/saved-posts';
+  import { LOGO_PATH } from '$lib/config/general';
   import Message from '$lib/components/Message/Message.svelte'
+  import Post from '$lib/components/Post/Post.svelte';
+  import Seo from '$lib/components/Common/Seo/Seo.svelte';
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
-  import Post from '$lib/components/Post/Post.svelte';
+  import { page } from '$app/stores';
   import { savedPosts } from '$lib/components/stores/saved-posts'
   import { updateStore, feed } from '$lib/components/stores/saved-posts'
-  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS } from '$lib/config/homefeed';
+
+  const {title, description, contentType, image } = SAVEDFEED_SEO;
+  const url = $page.url.href;
+  image.url = `${url}${LOGO_PATH}`;
+
 
   export let posts;
 
   let noSavedItems = false;
+
   const noSavedItemsMessage = {
     title: "Még nincs mentett bejegyzésed",
     text: "Böngéssz a főoldalon és ments el kedvenc bejegyzéseidet",
@@ -41,6 +50,7 @@
   $: $savedPosts, checkForSavedPosts();
 
   function checkForSavedPosts () {
+    console.log($savedPosts)
     if ($feed.length === 0 && (!$savedPosts || $savedPosts.length === 0)) {
     noSavedItems = true;
    }
@@ -134,3 +144,11 @@
   {/if}
 
 </main>
+
+<Seo 
+  {title}
+  {description}
+  {url}
+  {contentType}
+  {image}
+/>

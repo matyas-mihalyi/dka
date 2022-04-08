@@ -1,4 +1,4 @@
-import { getCookie } from './api/utils';
+import { getCookie } from '$lib/utils';
 
 export const put = async ({request}) => {
   

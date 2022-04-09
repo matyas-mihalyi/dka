@@ -1,20 +1,21 @@
 <script>
-  import ImageLoader from "../Image/ImageLoader.svelte";
-
-  export let post = {};
-
   import { writable } from 'svelte/store';
   import { savePost, unSavePost, isSaved, sharePost } from './post.utils';
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
+  import { page } from '$app/stores'
+  import ImageLoader from "../Image/ImageLoader.svelte";
+  
+  export let post = {};
 
   const saved = writable(isSaved(post.id));
+  const postLink = `/posts/${post.id}`;
 
   let shareData
   onMount(()=> {
     shareData = {
       title: `${post.title}`,
       text: `${post.title}`,
-      url: `${window.location}posts/${post.id}`
+      url: `${$page.url.href}posts/${post.id}`
     }
   });
 
@@ -23,7 +24,7 @@ import { onMount } from "svelte";
 
 <article>
   <h2>{post.title}</h2>
-  <ImageLoader src="{post.img}" alt="{post.title}" />
+  <ImageLoader src="{post.img}" alt="{post.title}" href={{url: postLink}} />
 
   {#if post.description}
     <p>
@@ -57,7 +58,7 @@ import { onMount } from "svelte";
       <span>Megosztás</span>
     </button>
 
-    <a class="button" href={`/posts/${post.id}`}>
+    <a class="button" href={postLink}>
       <i class="ri-arrow-right-line"></i>
       <span>Részletek</span>
     </a>

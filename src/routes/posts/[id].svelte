@@ -53,14 +53,6 @@
   @import './Post';
 </style>
 
-<Seo
-  title={post.title}
-  description={truncateDesc(post.description)}
-  url={$page.url.href}
-  contentType={'article'}
-  image={{ url: post.img, alt: post.title}}
-/>
-
 <main class="container">
     
   <header>
@@ -70,7 +62,7 @@
     </a>
   </header>
 
-  <Image src={post.img} alt={`${post.title}`} link={post.largeImg}/>
+  <Image src={post.img} alt={`${post.title}`} href={{ url: post.largeImg, target: '_blank'}}/>
 
   {#if post.description}
     <p>{@html post.description}</p>
@@ -146,3 +138,11 @@
   <a href={post.originalUrl}>Megtekintés a DKA oldalán <i class="ri-external-link-line"></i> </a>
   
 </main>
+
+<Seo
+  title={post.title}
+  description={truncateDesc(post.description)}
+  url={$page.url.href}
+  contentType={'article'}
+  image={{ url: post.img, alt: post.title}}
+/>

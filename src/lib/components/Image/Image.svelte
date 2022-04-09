@@ -1,7 +1,7 @@
 <script>
   export let src
   export let alt
-  export let link
+  export let href = { target: "_self"}
 
   import { onMount } from 'svelte'
 
@@ -10,14 +10,13 @@
 
   onMount(() => {
     thisImage.onload = () => {
-      console.log("loaded")
       loaded = true
     };
     
     if (thisImage.naturalWidth !== 0) {
       loaded = true
     };
-  }) 
+  });
 
 </script>
 
@@ -28,8 +27,8 @@
 {#if !loaded} 
   <div class="placeholder"></div>
 {/if}
-{#if link}
-<a href="{link}" target="_blank">
+{#if href.url}
+<a href="{href.url}" target="{href.target}">
   <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
 </a>
 {:else}

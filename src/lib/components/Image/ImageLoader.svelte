@@ -1,6 +1,7 @@
 <script>
-  export let src
-  export let alt
+  export let src;
+  export let alt;
+  export let href;
 
   import IntersectionObserver from '../Common/IntersectionObserver.svelte'
   import Image from './Image.svelte'
@@ -20,6 +21,6 @@
 
 <IntersectionObserver once={true} let:intersecting={intersecting}>
   {#if intersecting || nativeLoading}
-    <Image {alt} {src} />
+    <Image {alt} {src} {href} />
   {/if}
 </IntersectionObserver>

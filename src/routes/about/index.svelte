@@ -1,12 +1,13 @@
 <script>
-  import { PROJECT_NAME, LOGO_PATH } from "$lib/config/general";
+  import { PROJECT_NAME } from "$lib/config/general";
   import { ABOUT_PAGE_SEO } from "$lib/config/about-page";
   import { page } from "$app/stores";
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
+  import logo from '$lib/assets/dkalogo.jpg';
 
   const { title, description, contentType, image } = ABOUT_PAGE_SEO;
   const url = $page.url.href;
-  image.url = `${url}${LOGO_PATH}`;
+  image.url = logo;
   
 </script>
 <style lang="less">
@@ -14,7 +15,7 @@
 </style>
 
 <main class="container">
-  <img src="{LOGO_PATH}" alt="{image.alt}">
+  <img src="{logo}" alt="{image.alt}">
   <section>
     <h1>{`Mi a ${PROJECT_NAME}?`}</h1>
     <p>  

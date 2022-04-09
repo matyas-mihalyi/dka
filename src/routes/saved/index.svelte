@@ -18,19 +18,19 @@
 
 <script>
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS, SAVEDFEED_SEO } from '$lib/config/saved-posts';
-  import { LOGO_PATH } from '$lib/config/general';
-  import Message from '$lib/components/Message/Message.svelte'
-  import Post from '$lib/components/Post/Post.svelte';
-  import Seo from '$lib/components/Common/Seo/Seo.svelte';
   import { onMount } from 'svelte';
   import { browser } from '$app/env';
   import { page } from '$app/stores';
   import { savedPosts } from '$lib/components/stores/saved-posts'
   import { updateStore, feed } from '$lib/components/stores/saved-posts'
+  import Message from '$lib/components/Message/Message.svelte'
+  import logo from '$lib/assets/dkalogo.jpg';
+  import Post from '$lib/components/Post/Post.svelte';
+  import Seo from '$lib/components/Common/Seo/Seo.svelte';
 
   const {title, description, contentType, image } = SAVEDFEED_SEO;
   const url = $page.url.href;
-  image.url = `${url}${LOGO_PATH}`;
+  image.url = logo;
 
 
   export let posts;
@@ -39,7 +39,7 @@
 
   const noSavedItemsMessage = {
     title: "Még nincs mentett bejegyzésed",
-    text: "Böngéssz a főoldalon és ments el kedvenc bejegyzéseidet",
+    text: "Böngéssz a főoldalon és mentsd el kedvenc bejegyzéseidet",
     buttonData: {
       text: "A főoldalra",
       href: "/",

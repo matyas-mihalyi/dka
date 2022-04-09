@@ -4,6 +4,10 @@
   import Alert from '$lib/components/Common/Alert/Alert.svelte'
 </script>
 
+<style>
+  @import '$lib/styles/global.css';
+</style>
+
 <Menu />
 
 <slot></slot>

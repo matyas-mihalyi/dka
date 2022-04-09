@@ -39,7 +39,7 @@
 
   const noSavedItemsMessage = {
     title: "Még nincs mentett bejegyzésed",
-    text: "Böngéssz a főoldalon és ments el kedvenc bejegyzéseidet",
+    text: "Böngéssz a főoldalon és mentsd el kedvenc bejegyzéseidet",
     buttonData: {
       text: "A főoldalra",
       href: "/",

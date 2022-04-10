@@ -1,4 +1,42 @@
 @import '$remixicon/fonts/remixicon.css';
+/* colour variables */
+:root {
+  /* text */
+  --font-color-default: #000;
+  --font-color-link: #333;
+  --font-color-footer: #555;
+  
+  /* ui */
+  --ui-primary: #fff;
+  --ui-secondary: #f7f7f7;
+  --ui-tertiary: #cdcdcd;
+}
+
+div#app-wrapper.dark {
+  /* text */
+  --font-color-default: #ddd;
+  --font-color-link: #ccc;
+  --font-color-footer: #bbb;
+  
+  /* ui */
+  --ui-primary: #1d1d1d;
+  --ui-secondary: #2a2a2a;
+  --ui-tertiary: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* text */
+    --font-color-default: #ddd;
+    --font-color-link: #ccc;
+    --font-color-footer: #bbb;
+    
+    /* ui */
+    --ui-primary: #1d1d1d;
+    --ui-secondary: #2a2a2a;
+    --ui-tertiary: #555;
+  }
+}
 
 *{
   box-sizing: border-box;
@@ -8,6 +46,11 @@
 
 body {
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  background-color: var(--ui-primary);
+}
+
+div#app-wrapper {
+  background-color: var(--ui-primary);
 }
 
 main.container, footer {
@@ -15,6 +58,10 @@ main.container, footer {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+main.container{
+  background-color: var(--ui-primary);
 }
 
 @media screen and (min-width: 600px) {
@@ -26,4 +73,5 @@ main.container, footer {
 footer {
   padding: 1.5em 1em;
 }
+
 

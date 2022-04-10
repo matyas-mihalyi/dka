@@ -13,6 +13,8 @@ export const theme = derived(
 					? 'dark'
 					: 'light'
 			)
+		} else {
+			set('light') 
 		}
 	}
 )

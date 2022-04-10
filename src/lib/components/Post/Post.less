@@ -8,7 +8,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 1em;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--ui-tertiary);
     min-height: 30vh;
 
     &:last-of-type {
@@ -27,17 +27,19 @@
 
   h2 {
     .title-font();
+    color: var(--font-color-default);
     margin-bottom: 0.5em;
   }
 
   p {
     .default-font();
+    color: var(--font-color-default);
     max-width: 45ch;
   }
 
   a {
     text-decoration: none;
-    color: #444;
+    color: var(--font-color-link);
     display: inline;
     align-items: center;
   }
@@ -60,10 +62,12 @@
 
       i {
         .default-icon();
+        color: var(--font-color-default);
       }
 
       span {
         .default-icon-clue();
+        color: var(--font-color-default);
       }
     }
   }

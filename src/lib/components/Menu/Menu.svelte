@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import {slide} from 'svelte/transition';
   import { menuItems } from './menuItems';
-  import MenuLink from './MenuLink/MenuLink.svelte';
-  import Icon from '$lib/components/Common/Icon/Icon.svelte'
   import { PROJECT_NAME } from '$lib/config/general';
+  import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher.svelte';
+  import MenuLink from './MenuLink/MenuLink.svelte';
+  import Icon from '$lib/components/Common/Icon/Icon.svelte';
   
   let isOpen = false;
   let isMobile = true;
@@ -59,15 +60,16 @@
   
     <a class="logo" href="/">
       <Icon 
-        name={"dark"} 
-        width={isMobile ? "1.5rem" : "2.5rem"}
-        height={isMobile ? "1.5rem" : "2.5rem"}  
+        width={isMobile ? "1.5rem" : "2rem"}
+        height={isMobile ? "1.5rem" : "2rem"}  
       />
       <span>
         {PROJECT_NAME}
       </span>
     </a>
     
+    <ThemeSwitcher />
+
     <button on:click="{toggleMenu}">
       {#if isOpen}
       <i class="ri-close-line"></i>
@@ -75,7 +77,7 @@
       <i class="ri-menu-line"></i>
     {/if}
     </button>
-    
+
     {#if isOpen}
     <nav transition:slide>
       <ul role="menubar">
@@ -85,6 +87,8 @@
       </ul>
     </nav>
     {/if}
+
+    
   
   </div>
 </header>

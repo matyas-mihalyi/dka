@@ -1,5 +1,6 @@
 <script>
-  import { TITLE_SUFFIX } from '$lib/config/general'
+  import { TITLE_SUFFIX } from '$lib/config/general';
+  import logo from '$lib/assets/dkalogo.jpg';
 
   export let title;
   export let description;
@@ -25,7 +26,7 @@
   <meta name="twitter:description" content={description} />
   <meta name="twitter:url" content={url} />
   {#if image}
-  <meta name="twitter:image" content={image.url} />
+  <meta name="twitter:image" content={image.url? image.url : logo} />
     <meta name="twitter:image:alt" content={image.alt} />
   {/if}
 
@@ -34,6 +35,10 @@
   <meta property="og:type" content="{contentType}" />
   <meta property="og:title"  content="{metaTitle}" />
   <meta property="og:description" content="{description}" />
-  <meta property="og:image" itemprop="image" content="{image.url}" />
+  <meta property="og:image" itemprop="image" content="{image.url? image.url : logo}" />
+
+  <!-- colour -->
+  <meta name="theme-color" content="#cccccc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#2a2a2a" media="(prefers-color-scheme: dark)">
   
 </svelte:head>

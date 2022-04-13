@@ -23,7 +23,6 @@
   import { feed, loadedPostIds } from '$lib/components/stores/posts';
   import { updateStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
-  import logo from '$lib/assets/dkalogo.jpg';
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
 
@@ -32,7 +31,6 @@
 
   const {title, description, contentType, image } = HOMEFEED_SEO;
   const url = $page.url.href;
-  image.url = logo;
 
   feed.set(posts);
   

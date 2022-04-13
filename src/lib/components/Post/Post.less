@@ -44,6 +44,21 @@
     align-items: center;
   }
 
+  section.topics {
+    width: clamp(200px, 100%, 600px);
+    padding: 0 1em;
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.25em 0.5em;
+    
+    a {
+      .default-font();
+      text-decoration: underline;
+      color: var(--font-color-link)
+    }
+  }
+
   section.button-wrapper {
     width: clamp(200px, 100%, 600px);
     display: flex;
@@ -85,6 +100,10 @@
       h2 {
         margin-bottom: 0;
       }
+    }
+
+    section.topics {
+      gap: 0.5em .75em;
     }
 
   }

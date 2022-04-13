@@ -7,7 +7,8 @@ import {
   getCookie,
   isSaved,
   getLargePictureUrl,
-  getOriginals } from '$lib/utils';
+  getOriginals,
+  getKeywords } from '$lib/utils';
 
 export const get = async ({params, request}) => {
   const { id } = await params;
@@ -20,6 +21,7 @@ export const get = async ({params, request}) => {
   const text = await res.text();
   const xml = xml2js(text, {compact: true});
 
+  
   const img = getPictureUrl(await xml.dkalista.DKA.identifier.Filename._text, await xml.dkalista.DKA.identifier.URLOfDoc._text);
   const largeImg = getLargePictureUrl(img);
   const title = await xml.dkalista.DKA.DKAtitle.MainTitle._text; 
@@ -29,6 +31,7 @@ export const get = async ({params, request}) => {
   const src = await xml.dkalista.DKA.source?.NameOfSource?._text || null;
   const srcUrl = await xml.dkalista.DKA.source?.URLOfSource?._text || null;
   const originals = getOriginals(await xml.dkalista.DKA.original_document || null)
+  const topics = getKeywords(xml.dkalista.DKA);
 
   const post = {
     id,
@@ -41,7 +44,8 @@ export const get = async ({params, request}) => {
     src,
     srcUrl,
     saved,
-    originals
+    originals,
+    topics
   };
 
   return {

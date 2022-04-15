@@ -19,10 +19,11 @@
 <script>
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS, SAVEDFEED_SEO } from '$lib/config/saved-posts';
   import { onMount } from 'svelte';
-  import { browser } from '$app/env';
   import { page } from '$app/stores';
   import { savedPosts } from '$lib/components/stores/saved-posts'
   import { updateStore, feed } from '$lib/components/stores/saved-posts'
+
+  import InfiniteScroller from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Message from '$lib/components/Message/Message.svelte'
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
@@ -64,28 +65,11 @@
     }
   };
   
-  //intersection obs
   onMount(() => {
-    updateStore();
-
-    if (browser && $savedPosts && document.querySelector('footer')) { 
-      const handleIntersect = (entries, observer) => {
-        entries.forEach((entry) => {
-          if (limitReached()) {
-            observer.unobserve(entry.target);
-          }
-          showMorePosts();
-        });
-      };
-      const options = { threshold: 0.25, rootMargin: '-100% 0% 100%' };
-      const observer = new IntersectionObserver(handleIntersect, options);
-      observer.observe(document.querySelector('footer'));
-    }
-    
     //update savedPostsstore
+    updateStore();
   });
 
-  $: showMorePosts;
   async function showMorePosts() {
     try {
       const newLimit = limit + LIMIT_STEP;
@@ -135,9 +119,18 @@
   {#if noSavedItems}
    <Message message={noSavedItemsMessage}/>   
   {:else}
+
+  <InfiniteScroller
+    elementToObserve={'footer'}
+    limitReached={limitReached()}
+    showMorePosts={()=>showMorePosts()}
+  >
+
     {#each $feed?.slice(0, limit) as post}
       <Post post={post} />
     {/each}
+  
+  </InfiniteScroller>
   {/if}
 
 </main>

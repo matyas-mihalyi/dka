@@ -19,10 +19,11 @@
 <script>
   import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS, HOMEFEED_SEO } from '$lib/config/homefeed';
   import { onMount } from 'svelte';
-  import { browser } from '$app/env';
   import { feed, loadedPostIds } from '$lib/components/stores/posts';
   import { updateStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
+
+  import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
 
@@ -42,43 +43,22 @@
     return (MAX_POSTS <= limit);
   };
 
-  //intersection obs
 
-  let observer;
   onMount(() => {
-    if (browser && document.querySelector('footer')) {
-      const handleIntersect = (entries, observer) => {
-        entries.forEach((entry) => {
-          if (limitReached()) {
-            console.log("Limit reached");
-            observer.unobserve(entry.target);
-          }
-          showMorePosts();
-        });
-      };
-      const options = { threshold: 0.25, rootMargin: '-100% 0% 100%' };
-      observer = new IntersectionObserver(handleIntersect, options);
-      observer.observe(document.querySelector('footer'));
-    }
     //update savedPostsstore
     updateStore()
   });
 
-  $: showMorePosts;
   async function showMorePosts() {
     try {
       const newLimit = limit + LIMIT_STEP;
 
       if (newLimit <= $feed.length) {
-        // load more images from store
-        console.log('loaded posts from store')
-
+        // load more posts from store
         limit = newLimit;
       } else {
         const newPosts = await loadPosts(ADDITONAL_POSTS_TO_FETCH);
-        console.log('fetched new posts')
         feed.set([...$feed, ...newPosts.posts]);
-        
         limit = newLimit;
       }
       
@@ -99,7 +79,7 @@
       feed.set(newPosts.posts);
       loadedPostIds.set(newPosts.ids);
       limit = INITIAL_POSTS;
-      observer.observe(document.querySelector('footer'));
+      observe.set(true); // restart observer
     } catch (error) {
       console.error(error);
     }
@@ -129,18 +109,24 @@
 <style lang="less">
   @import './Home.less';
 </style>
-
-<main class="container">
-  {#each $feed?.slice(0, limit) as post}
-    <Post post={post} />
-  {/each}
-  {#if limitReached()}
-    <button on:click={loadNewPosts}>
-      <i class="ri-refresh-line"></i>
-      Új képek betöltése
-    </button>
-  {/if}
+<main class=container>
+  <InfiniteScroller
+    elementToObserve={'footer'}
+    limitReached={limitReached()}
+    showMorePosts={()=>showMorePosts()}
+  >
+    {#each $feed?.slice(0, limit) as post}
+      <Post post={post} />
+    {/each}
+    {#if limitReached()}
+      <button on:click={loadNewPosts}>
+        <i class="ri-refresh-line"></i>
+        Új képek betöltése
+      </button>
+    {/if}
+  </InfiniteScroller>
 </main>
+
 
 <Seo 
   {title}

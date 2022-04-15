@@ -30,6 +30,8 @@ export const post = async ({request}) => {
     };
   }
 
+  
+  // to do: fetch'/api/posts' instead
   const posts = await ids.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;
     const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);

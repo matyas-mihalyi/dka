@@ -19,6 +19,8 @@ export const post = async ({ request }) => {
     idString = previousIds ? JSON.stringify([ ...previousIds, ...ids]) : JSON.stringify(ids);
   } 
   
+
+  // to do: fetch'/api/posts' instead
   const posts = await ids.reduce(async (prevPromise, id) => {
     let posts = await prevPromise;
     const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);

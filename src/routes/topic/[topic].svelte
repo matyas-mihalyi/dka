@@ -1,12 +1,20 @@
 <script context="module">
 
- export async function load ({fetch, params}) {
+ export async function load ({fetch, params, url}) {
   const { topic } = await params;
+  const page = await url.searchParams.get("page");
+  
   const res = await fetch(`/api/topic/${topic}.json`);
+  const ids = await res.json();
 
-  const {posts, ids} = await res.json();
+
+  const requestBody = JSON.stringify({ids});
+  const postsRes = await fetch(`/api/posts`, {method: 'POST', body: requestBody});
+
+  const posts = await postsRes.json();
 
   return {
+    status: res.status,
     props: {
       posts,
       ids,
@@ -25,6 +33,9 @@
 
   export let posts;
   export let topic;
+  export let ids;
+
+  console.log(ids)
 
   TOPIC_FEED_SEO.description = TOPIC_FEED_SEO.description + topic;
   const { description, contentType, image } = TOPIC_FEED_SEO;
@@ -41,7 +52,7 @@
 
 <main class="container">
   <h1>#{topic}</h1>
-  {#each posts as post}
+  {#each posts.posts as post}
     <Post post={post} />
   {/each}
 </main>

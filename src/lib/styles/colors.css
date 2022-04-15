@@ -1,0 +1,99 @@
+:root {
+  /* font */
+  --font-h: 205;
+  --font-s: 100%;
+  --font-l: 7%;
+  --font-color: hsl(
+    var(--font-h),
+    var(--font-s),
+    var(--font-l)
+  );
+  --font-color-light: hsl(
+    var(--font-h),
+    var(--font-s),
+    calc(var(--font-l) * 1.3)
+  );
+  
+  /* blue */
+  --primary-h: 188;
+  --primary-s: 68%;
+  --primary-l: 25%;
+
+  --primary-color: hsl(
+    var(--primary-h),
+    var(--primary-s),
+    var(--primary-l)
+    );
+
+  --primary-color-dark : hsl(
+    var(--primary-h),
+    var(--primary-s),
+    calc(var(--primary-l) * 0.8)  
+  );
+
+  --primary-color-dark-2 : hsl(
+    var(--primary-h),
+    var(--primary-s),
+    5%  
+  );
+
+  --primary-color-light : hsl(
+    var(--primary-h),
+    var(--primary-s),
+    calc(var(--primary-l) * 1.3)  
+  );
+
+  --primary-color-light-2 : hsla(
+    var(--primary-h),
+    var(--primary-s),
+    var(--primary-l),
+    0.1
+  ); 
+  
+  /* secondary */
+  --secondary-h: 349;
+  --secondary-s: 96%;
+  --secondary-l: 31%;
+  --secondary-color: hsl(
+    var(--secondary-h),
+    var(--secondary-s),
+    var(--secondary-l)
+  );
+
+  /* tertiary */
+  --tertiary-h: 52;
+  --tertiary-s: 94%;
+  --tertiary-l: 94%;
+  --tertiary-color: hsl(
+    var(--tertiary-h),
+    var(--tertiary-s),
+    var(--tertiary-l)
+  );
+
+  --tertiary-color-light: hsl(
+    var(--tertiary-h),
+    var(--tertiary-s),
+    96%
+  );
+    
+  /* other */
+  --other-h: 32;
+  --other-s: 65%;
+  --other-l: 62%;
+  --other-color: hsl(
+    var(--other-h),
+    var(--other-s),
+    var(--other-l)
+  );
+
+  /* grays */
+
+  --ui-gray-1: #333;
+  --ui-gray-2: #555;
+  --ui-gray-3: #777;
+  --ui-gray-4: #999;
+  --ui-gray-5: #bbb;
+  --ui-gray-4: #ddd;
+  --ui-white: #fff;
+
+}

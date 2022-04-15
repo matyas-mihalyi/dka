@@ -47,7 +47,10 @@
 <style>
   h1 {
     margin-top: 2.5em;
+    color: var(--ui-secondary);
+    position: relative;
   }
+
 </style>
 
 <main class="container">

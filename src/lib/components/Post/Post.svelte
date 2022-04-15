@@ -23,7 +23,7 @@
 </script>
 
 <article>
-  <h2>{post.title}</h2>
+  <h1>{post.title}</h1>
   <ImageLoader src="{post.img}" alt="{post.title}" href={{url: postLink}} />
 
   {#if post.topics}

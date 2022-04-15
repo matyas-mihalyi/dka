@@ -65,7 +65,9 @@
   <Image src={post.img} alt={`${post.title}`} href={{ url: post.largeImg, target: '_blank'}}/>
 
   {#if post.description}
+  <section class="description">
     <p>{@html post.description}</p>
+  </section>
   {/if}
   
   {#if post.topics}

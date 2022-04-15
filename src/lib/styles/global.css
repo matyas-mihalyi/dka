@@ -1,42 +1,39 @@
 @import '$remixicon/fonts/remixicon.css';
+@import './colors.css';
+
 /* colour variables */
 :root {
   /* text */
-  --font-color-default: #000;
-  --font-color-link: #333;
-  --font-color-footer: #555;
+  --font-color-default: var(--font-color);
+  --font-color-secondary: var(--tertiary-color);
+  --font-color-link: var(--primary-color-dark);
+  --font-color-active: var(--secondary-color);
+  --icon-color: var(--primary-color);
   
   /* ui */
   --ui-primary: #fff;
-  --ui-secondary: #f7f7f7;
-  --ui-tertiary: #cdcdcd;
+  --ui-secondary: var(--primary-color);
+  --ui-secondary-light: var(--primary-color-light-2);
+  --ui-secondary-dark: var(--primary-color-dark);
+  --ui-tertiary: var(--secondary-color);
+  --ui-accent: var(--secondary-color);
+  
+  /* z-index */
+  --menu-header-z: 100;
+  
 }
 
 div#app-wrapper.dark {
   /* text */
-  --font-color-default: #ddd;
-  --font-color-link: #ccc;
-  --font-color-footer: #bbb;
+  --font-color-default: var(--tertiary-color-light);
+  --font-color-link: var(--tertiary-color);
+  --icon-color: var(--tertiary-color);
   
   /* ui */
-  --ui-primary: #1d1d1d;
-  --ui-secondary: #2a2a2a;
+  --ui-primary: var(--primary-color-dark-2);
   --ui-tertiary: #555;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* text */
-    --font-color-default: #ddd;
-    --font-color-link: #ccc;
-    --font-color-footer: #bbb;
-    
-    /* ui */
-    --ui-primary: #1d1d1d;
-    --ui-secondary: #2a2a2a;
-    --ui-tertiary: #555;
-  }
-}
 
 *{
   box-sizing: border-box;

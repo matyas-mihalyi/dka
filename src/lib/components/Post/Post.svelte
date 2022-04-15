@@ -3,7 +3,7 @@
   import { savePost, unSavePost, isSaved, sharePost } from './post.utils';
   import { onMount } from "svelte";
   import { page } from '$app/stores'
-  import ImageLoader from "../Image/ImageLoader.svelte";
+  import ImageLoader from "$lib/components/Image/ImageLoader.svelte";
   
   export let post = {};
 
@@ -26,11 +26,22 @@
   <h2>{post.title}</h2>
   <ImageLoader src="{post.img}" alt="{post.title}" href={{url: postLink}} />
 
+  {#if post.topics}
+  <section class="topics">
+    {#each post.topics as topic}
+      <a href={"/topic/" + topic}>#{topic}</a>
+    {/each}
+  </section>
+  {/if}
+
   {#if post.description}
+  <section class="description">
     <p>
       {@html post.description}
     </p>
+  </section>  
   {/if}
+
 
   <section class="button-wrapper">
     {#if $saved}

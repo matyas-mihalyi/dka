@@ -67,7 +67,14 @@
   {#if post.description}
     <p>{@html post.description}</p>
   {/if}
-
+  
+  {#if post.topics}
+  <section class="topics">
+    {#each post.topics as topic}
+      <a href={"/topic/" + topic}>#{topic}</a>
+    {/each}
+  </section>
+  {/if}
   
   <section class="button-wrapper">
     

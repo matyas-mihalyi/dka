@@ -37,15 +37,20 @@
       let y = window.scrollY;
       if(y < lastY) {
         hidden = false;
-      } else {
+      } else if (!isOpen) {
         hidden = true;
       }
       lastY = y;
     };
 
     window.onresize = () => checkScreenWidth();
-  
   });
+
+  function closeMenu () {
+    if (isMobile) {
+      toggleMenu();
+    }
+  }
 
 </script>
 
@@ -58,7 +63,7 @@
 <header class:hidden>
   <div role="navigation">
   
-    <a class="logo" href="/">
+    <a class="logo" href="/" on:click="{isOpen ? closeMenu() : null}">
       <Icon 
         width={isMobile ? "1.5rem" : "2rem"}
         height={isMobile ? "1.5rem" : "2rem"}  
@@ -82,7 +87,7 @@
     <nav transition:slide>
       <ul role="menubar">
         {#each menuItems as menuItem}
-          <MenuLink {menuItem} />
+          <MenuLink {menuItem} on:click={()=> closeMenu()}/>
         {/each}
       </ul>
     </nav>

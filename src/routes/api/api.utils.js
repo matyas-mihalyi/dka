@@ -1,12 +1,10 @@
 import { xml2js } from 'xml-js';
 import { getPictureUrl, getDescription, getKeywords } from '$lib/utils';
 
-export const post = async ({ request }) => {
-  
-  const body = JSON.parse(await request.text());
-  const ids = await body.ids.ids;
+export async function getPosts (ids = []) { 
   
   const posts = await ids.reduce(async (prevPromise, id) => {
+
     let posts = await prevPromise;
     const res = await fetch(`https://dka.oszk.hu/export/xml_/${id}.xml`);
     if (res.ok) {
@@ -24,12 +22,6 @@ export const post = async ({ request }) => {
     return posts;
   }, []);
   
-  return {
-    status: 200,
-    body: {
-      posts
-    }
-  };
+  return posts;
   
-
 }

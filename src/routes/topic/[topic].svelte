@@ -5,13 +5,7 @@
   const page = await url.searchParams.get("page");
   
   const res = await fetch(`/api/topic/${topic}.json`);
-  const ids = await res.json();
-
-
-  const requestBody = JSON.stringify({ids});
-  const postsRes = await fetch(`/api/posts`, {method: 'POST', body: requestBody});
-
-  const posts = await postsRes.json();
+  const {posts, ids} = await res.json();
 
   return {
     status: res.status,
@@ -55,7 +49,7 @@
 
 <main class="container">
   <h1>#{topic}</h1>
-  {#each posts.posts as post}
+  {#each posts as post}
     <Post post={post} />
   {/each}
 </main>

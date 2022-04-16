@@ -48,10 +48,11 @@
   $: $savedPosts, checkForSavedPosts();
 
   function checkForSavedPosts () {
-    console.log($savedPosts)
     if ($feed.length === 0 && (!$savedPosts || $savedPosts.length === 0)) {
-    noSavedItems = true;
-   }
+      noSavedItems = true;
+    } else {
+      noSavedItems = false;
+    }
   }
   // export let ids;
 

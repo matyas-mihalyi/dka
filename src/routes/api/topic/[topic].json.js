@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getIdFromUrl, encodeURIforDKA } from '$lib/utils';
+import {getPosts} from '../api.utils';
 
 export const get = async ({ request, params }) => {
   const { topic } = await params;
@@ -17,10 +18,12 @@ export const get = async ({ request, params }) => {
     ids.push(id);
   });
 
+  const posts = await getPosts(ids);
 
   return {
     status: 200,
     body: {
+      posts,
       ids
     }
   }

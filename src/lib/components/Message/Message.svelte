@@ -2,12 +2,16 @@
   import Button from "../Common/Button/Button.svelte";
 
   export let message = {title: "", text: ""}
+
+  const {href, text, icon} = message.buttonData;
 </script>
 
 <main>
   <h2>{message.title}</h2>
   <p>{message.text}</p>
-  <Button buttonData = {message.buttonData}/>
+  {#if text}
+    <Button {href} {text} {icon} />
+  {/if}
 </main>
 
 <style>

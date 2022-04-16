@@ -1,5 +1,4 @@
-import { xml2js } from 'xml-js';
-import { getPictureUrl, getDescription, getIds, getCookie, getKeywords } from '$lib/utils';
+import { getIds, getCookie } from '$lib/utils';
 import { getPosts } from './api.utils';
 
 export const post = async ({ request }) => {

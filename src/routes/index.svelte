@@ -26,6 +26,7 @@
   import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
+  import Button from '$lib/components/Common/Button/Button.svelte';
 
   export let posts;
   export let ids;
@@ -123,6 +124,11 @@
         <i class="ri-refresh-line"></i>
         Új képek betöltése
       </button>
+      <Button 
+        text={'Új képek betöltése'}
+        icon={'ri-refresh-line'}
+        on:click={loadNewPosts}
+      />
     {/if}
   </InfiniteScroller>
 </main>

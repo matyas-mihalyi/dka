@@ -38,7 +38,6 @@
   <meta property="og:image" itemprop="image" content="{image.url? image.url : logo}" />
 
   <!-- colour -->
-  <meta name="theme-color" content="#cccccc" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#2a2a2a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#14606b" />
   
 </svelte:head>

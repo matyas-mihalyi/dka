@@ -120,10 +120,6 @@
       <Post post={post} />
     {/each}
     {#if limitReached()}
-      <button on:click={loadNewPosts}>
-        <i class="ri-refresh-line"></i>
-        Új képek betöltése
-      </button>
       <Button 
         text={'Új képek betöltése'}
         icon={'ri-refresh-line'}

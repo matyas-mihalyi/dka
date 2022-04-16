@@ -13,7 +13,7 @@ export async function getPosts (ids = []) {
       const post = {
         img: getPictureUrl(js.dkalista.DKA.identifier.Filename._text, js.dkalista.DKA.identifier.URLOfDoc._text),
         title: js.dkalista.DKA.DKAtitle.MainTitle._text,
-        description: getDescription(js.dkalista.DKA, { truncated: true}),
+        description: getDescription(js.dkalista.DKA),
         topics: getKeywords(js.dkalista.DKA),
         id: id
       }

@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import { page } from '$app/stores'
   import ImageLoader from "$lib/components/Image/ImageLoader.svelte";
+  import TruncatedText from '$lib/components/Common/TruncatedText/TruncatedText.svelte';
   
   export let post = {};
 
@@ -23,7 +24,7 @@
 </script>
 
 <article>
-  <h1>{post.title}</h1>
+  <h2>{post.title}</h2>
   <ImageLoader src="{post.img}" alt="{post.title}" href={{url: postLink}} />
 
   {#if post.topics}
@@ -36,9 +37,7 @@
 
   {#if post.description}
   <section class="description">
-    <p>
-      {@html post.description}
-    </p>
+    <TruncatedText text={post.description} limit={140}/>
   </section>  
   {/if}
 

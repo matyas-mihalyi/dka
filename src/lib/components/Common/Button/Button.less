@@ -1,24 +1,23 @@
 @import 'src/lib/styles/variables.less';
 
-main {
-  min-height: 100vh;
-}
-
-main > button {
-  .default-font();
-  color: var(--font-color-default);
+button {
   display: block;
   padding: 1em;
   border-radius: 0.25em;
   border: none;
-  box-shadow: inset 0 0 0 0.0625em #ddd;
+  box-shadow: inset 0 0 0 0.0625em var(--ui-tertiary);
   background-color: var(--ui-secondary);
   margin: 1em auto;
-  display: flex;
-  align-items: center;
+  
 }
 
-main > button > i {
+a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+button i{
   font-size: 1.5rem;
   margin-right: 0.5em;
 }

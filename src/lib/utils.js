@@ -103,6 +103,35 @@ function getOriginalFieldValue (obj = {}, key = '') {
   }
 }
 
+export function getKeywords (obj = {}) {
+  let keywords = null;
+  const subjects = obj.subject;
+
+  if (subjects && subjects.length) {
+    keywords = subjects.map(subject => subject.Keyword._text);
+  } else if (subjects && !subjects.length) {
+    keywords = subjects.Keyword._text;
+  }
+
+  return keywords;
+}
+
+export function encodeURIforDKA (str = "") {
+  const encoded = str
+    .replace(/á/g, "%E1")
+    .replace(/é/g, "%e9")
+    .replace(/í/g, "%ed")
+    .replace(/ó/g, "%f3")
+    .replace(/ö/g, "%f6")
+    .replace(/ő/g, "%F5")
+    .replace(/ú/g, "%fa")
+    .replace(/ü/g, "%fc")
+    .replace(/ű/g, "%fb")
+    .replace(/\s/g, "_");
+  
+  return encoded;
+}
+
 const ORIGINAL_FIELDS = {
   OriginalTitle: "Cím",
   OriginalAttendance: "Megjelenés",
@@ -157,8 +186,9 @@ export function truncateDesc (str="") {
 	return str.split("").slice(0, cutoff).join("") + "...";
 };
 
-function getIdFromUrl (str = "") {
-  const id = str.replace(/.*(\/|id=)(\d+)$/, "$2");
+export function getIdFromUrl (str = "") {
+  const url = str.replace(/\s/g, ""); //remove whitespace
+  const id = url.replace(/.*(\/|id=)(\d+)$/, "$2");
   return id;
 };
 

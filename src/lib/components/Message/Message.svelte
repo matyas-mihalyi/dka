@@ -27,4 +27,8 @@
   p {
     margin-bottom: 1rem;
   }
+
+  h2, p {
+    color: var(--font-color-default);
+  }
 </style>

@@ -65,9 +65,18 @@
   <Image src={post.img} alt={`${post.title}`} href={{ url: post.largeImg, target: '_blank'}}/>
 
   {#if post.description}
+  <section class="description">
     <p>{@html post.description}</p>
+  </section>
   {/if}
-
+  
+  {#if post.topics}
+  <section class="topics">
+    {#each post.topics as topic}
+      <a href={"/topic/" + topic}>#{topic}</a>
+    {/each}
+  </section>
+  {/if}
   
   <section class="button-wrapper">
     

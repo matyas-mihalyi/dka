@@ -4,7 +4,7 @@ footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: @ui-tertiary;
+  background-color: var(--ui-secondary-dark);
   margin-top: 3em;
 }
 
@@ -17,17 +17,14 @@ ul {
   gap: 0.25em;
 }
 
-// li:not(:last-child) {
-  //   padding: 0 1em;
-  // }
-  
   a {
     .footer-font();
+    color: var(--font-color-secondary);
   }
 
-  @media @gt-mobile {
-    ul {
-      flex-direction: row;
-      justify-content: space-around;
+@media @gt-mobile {
+  ul {
+    flex-direction: row;
+    justify-content: space-around;
   }
 }

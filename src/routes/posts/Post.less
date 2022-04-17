@@ -70,7 +70,7 @@ section.description {
   align-items: center;
   justify-content: center;
   position: relative;
-  p {
+  p, :global(a) {
     .default-font();
     color: var(--font-color-default);
   }
@@ -175,12 +175,12 @@ header {
     flex-grow: 1;
   }
 
-  a {
-    text-decoration: none;
+  span {
     margin-right: 0.25em;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
  
     i {
       .default-icon();

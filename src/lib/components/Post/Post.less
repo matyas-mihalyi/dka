@@ -31,18 +31,15 @@
     margin-bottom: 0.5em;
   }
 
-  :global(p) {
-    .default-font();
-    color: var(--font-color-default);
-    max-width: 45ch;
-  }
+  
+  section.description {
+    :global(p), :global(a) {
+      .default-font();
+      color: var(--font-color-default);
+      max-width: 45ch;
+    }
 
-  // a {
-  //   text-decoration: none;
-  //   color: var(--font-color-link);
-  //   display: inline;
-  //   align-items: center;
-  // }
+  }
 
   section.topics {
     width: clamp(200px, 100%, 600px);

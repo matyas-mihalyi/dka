@@ -16,7 +16,7 @@
     shareData = {
       title: `${post.title}`,
       text: `${post.title}`,
-      url: `${$page.url.href}posts/${post.id}`
+      url: postLink
     }
   });
 

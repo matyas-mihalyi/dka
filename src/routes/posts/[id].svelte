@@ -21,11 +21,11 @@
   import { savePost, deleteSavedPost, saved, updateStore, sharePost, } from '../posts/utils';  
   import { writable } from "svelte/store";
   import Image from '$lib/components/Image/Image.svelte';
-  import { page } from '$app/stores';
+  import { page, navigating } from '$app/stores';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
   import { truncateDesc } from '$lib/utils';
 
-  onMount(()=> updateStore())
+  onMount(()=> {updateStore(); console.log(window.history)})
 
   export let post;
 
@@ -46,6 +46,14 @@
     deleteSavedPost(id);
     isSaved.set(false);
   };
+
+  function goBack () {
+    if (window.history.length > 1) {
+      window.history.back()
+    } else {
+      window.location.href = '/';
+    }
+  }
   
 </script>
 
@@ -57,9 +65,9 @@
     
   <header>
     <h1>{post.title}</h1>
-    <a href="/" title="Vissza a főoldalra">
+    <span role="navigation" title="Vissza" on:click="{goBack}">
       <i class="ri-arrow-left-line"></i>
-    </a>
+    </span>
   </header>
 
   <Image src={post.img} alt={`${post.title}`} href={{ url: post.largeImg, target: '_blank'}}/>

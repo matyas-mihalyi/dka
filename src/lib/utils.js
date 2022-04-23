@@ -140,7 +140,8 @@ const ORIGINAL_FIELDS = {
   OriginalType: "Formátum",
   Technology: "Technológia",
   Location: "Helyszín",
-  OriginalCreator: "Szerző"
+  OriginalCreator: "Szerző",
+  OriginalISBN: "ISBN"
 }
 
 const MAX_NUM_OF_IDS = 101000;

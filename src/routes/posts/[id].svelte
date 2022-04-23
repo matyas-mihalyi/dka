@@ -21,13 +21,18 @@
   import { savePost, deleteSavedPost, saved, updateStore, sharePost, } from '../posts/utils';  
   import { writable } from "svelte/store";
   import Image from '$lib/components/Image/Image.svelte';
-  import { page, navigating } from '$app/stores';
+  import { page } from '$app/stores';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
-  import { truncateDesc } from '$lib/utils';
-
-  onMount(()=> {updateStore(); console.log(window.history)})
+  import { truncateDesc, getPreviousFeedPath } from '$lib/utils';
 
   export let post;
+  let prevPath;
+
+  onMount(()=> {
+    updateStore();
+    prevPath = getPreviousFeedPath() || "/";
+  });
+
 
   const shareData = {
     title: `${post.title}`,
@@ -46,14 +51,6 @@
     deleteSavedPost(id);
     isSaved.set(false);
   };
-
-  function goBack () {
-    if (window.history.length > 1) {
-      window.history.back()
-    } else {
-      window.location.href = '/';
-    }
-  }
   
 </script>
 
@@ -65,19 +62,21 @@
     
   <header>
     <h1>{post.title}</h1>
-    <span role="navigation" title="Vissza" on:click="{goBack}">
+    <a role="navigation" title="Vissza" href="{prevPath}">
       <i class="ri-arrow-left-line"></i>
-    </span>
+    </a>
   </header>
 
   <Image src={post.img} alt={`${post.title}`} href={{ url: post.largeImg, target: '_blank'}}/>
 
+  <!-- description -->
   {#if post.description}
   <section class="description">
     <p>{@html post.description}</p>
   </section>
   {/if}
   
+  <!-- topics -->
   {#if post.topics}
   <section class="topics">
     {#each post.topics as topic}

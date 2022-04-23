@@ -1,3 +1,5 @@
+import { browser } from "$app/env";
+
 export function getRelated (relation) {
   let relatedPosts = [];
   
@@ -138,7 +140,8 @@ const ORIGINAL_FIELDS = {
   OriginalType: "Formátum",
   Technology: "Technológia",
   Location: "Helyszín",
-  OriginalCreator: "Szerző"
+  OriginalCreator: "Szerző",
+  OriginalISBN: "ISBN"
 }
 
 const MAX_NUM_OF_IDS = 101000;
@@ -189,7 +192,7 @@ export function truncateDesc (str="") {
 export function getIdFromUrl (str = "") {
   const url = str.replace(/\s/g, ""); //remove whitespace
   const id = url.replace(/.*(\/|id=)(\d+)$/, "$2");
-  return id;
+  return addZeroes(id);
 };
 
 function checkRelatedUrl (str="") {
@@ -209,4 +212,21 @@ export const isSaved = (savedIds=[], id="") => {
     return savedIds.includes(id);
   }
   return false
+}
+
+export function updateHistory(pathname) {
+  if (browser && isPathToStore(pathname)) {
+    const previousPath = JSON.stringify(pathname);
+    sessionStorage.setItem('prevPath', previousPath);      
+  }
+}
+
+export function getPreviousFeedPath () {
+  const previousPath = JSON.parse(sessionStorage.getItem('prevPath'));
+  return previousPath;
+}
+
+const isPathToStore = (pathname) => {
+  const regex = /^\/$|topic|saved/;
+  return regex.test(pathname);
 }

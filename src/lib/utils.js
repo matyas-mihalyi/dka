@@ -1,3 +1,5 @@
+import { browser } from "$app/env";
+
 export function getRelated (relation) {
   let relatedPosts = [];
   
@@ -209,4 +211,21 @@ export const isSaved = (savedIds=[], id="") => {
     return savedIds.includes(id);
   }
   return false
+}
+
+export function updateHistory(pathname) {
+  if (browser && isPathToStore(pathname)) {
+    const previousPath = JSON.stringify(pathname);
+    sessionStorage.setItem('prevPath', previousPath);      
+  }
+}
+
+export function getPreviousFeedPath () {
+  const previousPath = JSON.parse(sessionStorage.getItem('prevPath'));
+  return previousPath;
+}
+
+const isPathToStore = (pathname) => {
+  const regex = /^\/$|topic|saved/;
+  return regex.test(pathname);
 }

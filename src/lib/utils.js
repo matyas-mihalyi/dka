@@ -192,7 +192,7 @@ export function truncateDesc (str="") {
 export function getIdFromUrl (str = "") {
   const url = str.replace(/\s/g, ""); //remove whitespace
   const id = url.replace(/.*(\/|id=)(\d+)$/, "$2");
-  return id;
+  return addZeroes(id);
 };
 
 function checkRelatedUrl (str="") {

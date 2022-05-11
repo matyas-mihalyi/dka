@@ -6,7 +6,7 @@ export { truncateDesc } from '$lib/utils';
 
 const getSavedPosts = () => browser ? JSON.parse(window.localStorage.getItem("savedPosts")) : "problémaaaaa";
 
-export function updateStore () { savedPosts.set(getSavedPosts()); };
+export function updateSavedPostsStore () { savedPosts.set(getSavedPosts()); };
 
 export function savePost (id="") {
   
@@ -16,7 +16,7 @@ export function savePost (id="") {
     localStorage.setItem("savedPosts", JSON.stringify([...getSavedPosts(), id]));
   };
   
-  updateStore();
+  updateSavedPostsStore();
   
   console.log(JSON.parse(localStorage.getItem('savedPosts')))
 };
@@ -27,7 +27,7 @@ export function deleteSavedPost (id="") {
   
   localStorage.setItem("savedPosts", JSON.stringify(updatedSavedPosts));
   
-  updateStore();
+  updateSavedPostsStore();
 
   console.log(JSON.parse(localStorage.getItem('savedPosts')))
 }

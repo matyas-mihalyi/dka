@@ -18,7 +18,7 @@
 
 <script>
   import { onMount } from 'svelte/internal';
-  import { savePost, deleteSavedPost, saved, updateStore, sharePost, } from '../posts/utils';  
+  import { savePost, deleteSavedPost, saved, updateSavedPostsStore, sharePost, } from '../posts/utils';  
   import { writable } from "svelte/store";
   import Image from '$lib/components/Image/Image.svelte';
   import { page } from '$app/stores';
@@ -29,7 +29,7 @@
   let prevPath;
 
   onMount(()=> {
-    updateStore();
+    updateSavedPostsStore();
     prevPath = getPreviousFeedPath() || "/";
   });
 

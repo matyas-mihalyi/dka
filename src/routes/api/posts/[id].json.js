@@ -13,6 +13,8 @@ import {
 export const get = async ({params, request}) => {
   const { id } = await params;
 
+  console.log("get request received in [id].json")
+
   const cookies = request.headers.get('cookie');
   const savedPosts = await JSON.parse(getCookie(cookies, 'savedPosts'));
   const saved = isSaved(await savedPosts, await id);

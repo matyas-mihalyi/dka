@@ -6,7 +6,7 @@
 </script>
 
 <script>
-  import { onMount } from "svelte/internal";
+  import { onDestroy, onMount } from "svelte/internal";
   import {browser} from "$app/env";
 
   export let elementToObserve;
@@ -21,7 +21,7 @@
   let observer;
   onMount(() => {
     
-    // updateStore() update in index.svelte!
+    // updateSavedPostsStore() update in index.svelte!
     
     if (browser && document.querySelector(elementToObserve)) {
       const handleIntersect = (entries, observer) => {
@@ -32,9 +32,10 @@
             observe.set(false);
           }
           showMorePosts();
+          // console.log(document.querySelector(elementToObserve));
         });
       };
-      const options = { threshold: 0.25, rootMargin: '-100% 0% 100%' };
+      const options = { threshold: 0.5, rootMargin: '0% 0% 0% 0%' };
       observer = new IntersectionObserver(handleIntersect, options);
       observer.observe(document.querySelector(elementToObserve));
     }

@@ -28,9 +28,9 @@
   <div class="placeholder"></div>
 {/if}
 {#if href.url}
-<a href="{href.url}" target="{href.target}" class="image-wrapper">
-  <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
-</a>
+  <a href="{href.url}" target="{href.target}" class="image-wrapper">
+    <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
+  </a>
 {:else}
   <img {src} {alt} title="{alt}" class:loaded bind:this={thisImage} loading="lazy"/>
 {/if}

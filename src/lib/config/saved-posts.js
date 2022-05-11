@@ -7,7 +7,7 @@ export const MAX_POSTS_IN_COOKIES = 10;
 
 const TITLE = `Mentett képek`;
 const META_DESCRIPTION = "Ments el kedvenc képeid a Digitális Képarchívumról.";
-const TYPE = "website"
+const TYPE = "website";
 
 
 export const SAVEDFEED_SEO = {
@@ -16,5 +16,15 @@ export const SAVEDFEED_SEO = {
   contentType: TYPE,
   image: {
     alt: "DKA logo"
+  }
+}
+
+export const NO_SAVED_ITEMS_MESSAGE = {
+  title: "Még nincs mentett bejegyzésed",
+  text: "Böngéssz a főoldalon és mentsd el kedvenc bejegyzéseidet",
+  buttonData: {
+    text: "A főoldalra",
+    href: "/",
+    icon: "ri-arrow-left-line"
   }
 }

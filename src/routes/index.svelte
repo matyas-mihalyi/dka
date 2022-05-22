@@ -23,7 +23,7 @@
   import { feed } from '$lib/components/stores/posts';
   import { updateSavedPostsStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
-  import { scrollTo, updateScrollPos, updateLoadedPosts } from '$lib/utils/index';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
@@ -96,7 +96,7 @@
         // load more posts from store
         limit = newLimit;
       } else {
-        const nextPostIds = getNextBatch();
+        const nextPostIds = getNextBatch($feed, ids, ADDITONAL_POSTS_TO_FETCH);
         // fetch new posts
         const newPosts = await loadPosts(nextPostIds);
         console.log('showMorePosts ran')
@@ -114,23 +114,6 @@
     }
   }
   
-  
-  function getNextBatch () {
-    console.log('getNextBatch ran')
-    const fetchedPostIds = $feed.map(post => post.id);
-    const remaingingPostIds = ids.filter((id)=> !fetchedPostIds.includes(id));
-    const nextPostsToFetch = remaingingPostIds.slice(0, ADDITONAL_POSTS_TO_FETCH);
-    // add posts to sessionStorage
-    // sessionStorage.setItem('loadedPosts_home', JSON.stringify([...fetchedPostIds.slice(INITIAL_POSTS - 1), ...nextPostsToFetch]));
-
-    return nextPostsToFetch;
-  }
-
-
-   
-
-
-
   async function loadNewPosts () {
     scrollTo(0);
     
@@ -156,13 +139,6 @@
     }
   };
 
-
-  async function loadPosts (ids = []) {
-    const postsRes = await fetch('/api/get-posts.json', {method: 'POST', body: JSON.stringify({requested_ids: ids})});
-    const posts = await postsRes.json();
-    return posts;
-  }
-  
   let scrollY;
 
 </script>

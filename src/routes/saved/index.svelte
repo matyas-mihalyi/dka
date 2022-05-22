@@ -21,7 +21,7 @@
   import { page } from '$app/stores';
   import { savedPosts } from '$lib/components/stores/saved-posts';
   import { updateSavedPostsStore, feed } from '$lib/components/stores/saved-posts';
-  import { scrollTo, updateScrollPos, updateLoadedPosts } from '$lib/utils/index';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Message from '$lib/components/Message/Message.svelte'
@@ -101,7 +101,7 @@
         // load more posts from store
         limit = newLimit;
       } else {
-        const nextIds = getNextBatch();
+        const nextIds = getNextBatch($feed, $savedPosts, ADDITONAL_POSTS_TO_FETCH);
         const newPosts = await loadPosts(nextIds); //add next x number of saved ids
         feed.set([...$feed, ...await newPosts]);        
         limit = newLimit;
@@ -114,19 +114,6 @@
     catch (error) {
       console.error(error);
     }
-  }
-
-  async function loadPosts (ids = []) {
-    const postsRes = await fetch('/api/get-posts.json', {method: 'POST', body: JSON.stringify({requested_ids: ids})});
-    const posts = await postsRes.json();
-    return posts;
-  }
-
-  function getNextBatch () {
-    const fetchedPostIds = $feed.map(post => post.id);
-    const remaingingPostIds = $savedPosts.filter((id)=> !fetchedPostIds.includes(id));
-    const nextPostsToFetch = remaingingPostIds.slice(0, ADDITONAL_POSTS_TO_FETCH);
-    return nextPostsToFetch;
   }
 
   let scrollY;

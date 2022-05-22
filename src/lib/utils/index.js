@@ -1,5 +1,7 @@
 export {
   scrollTo,
   updateScrollPos,
-  updateLoadedPosts
+  updateLoadedPosts,
+  loadPosts,
+  getNextBatch
 } from './feed-utils';

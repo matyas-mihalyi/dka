@@ -26,7 +26,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte/internal';
   import { writable } from 'svelte/store';
-  import { updateScrollPos, scrollTo, updateLoadedPosts } from '$lib/utils/index';
+  import { updateScrollPos, scrollTo, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import Loading from '$lib/components/Loading/Loading.svelte';
   import Post from '$lib/components/Post/Post.svelte';
@@ -89,7 +89,7 @@
         // load more posts from store
         limit = newLimit;
       } else {
-        const nextPostIds = getNextBatch();
+        const nextPostIds = getNextBatch($feed, ids, ADDITONAL_POSTS_TO_FETCH);
         const newPosts = await loadPosts(nextPostIds); //add next x number of saved ids
         feed.set([...$feed, ...await newPosts]);        
         limit = newLimit;
@@ -101,22 +101,6 @@
       console.error(error);
     }
   }
-
-  async function loadPosts (ids = []) {
-    const postsRes = await fetch('/api/get-posts.json', {method: 'POST', body: JSON.stringify({requested_ids: ids})});
-    const posts = await postsRes.json();
-    return posts;
-  }
-
-
-  // to do: improve performance by not iterating through the whole array
-  function getNextBatch () {
-    const fetchedPostIds = $feed.map(post => post.id);
-    const remaingingPostIds = ids.filter((id)=> !fetchedPostIds.includes(id));
-    const nextPostsToFetch = remaingingPostIds.slice(0, ADDITONAL_POSTS_TO_FETCH);
-    return nextPostsToFetch;
-  }
-
 
   // SEO stuff
   TOPIC_FEED_SEO.description = TOPIC_FEED_SEO.description + topic;

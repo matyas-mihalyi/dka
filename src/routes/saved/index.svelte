@@ -1,15 +1,14 @@
 <script context="module">
+  import { INITIAL_POSTS } from '$lib/config/saved-posts';
   
-  export async function load ({fetch}) {
-    const res = await fetch(
-      `/api/saved-posts.json`, { method: 'POST'}
-      );
-    const {posts, ids} = await res.json();
+  export async function load ({fetch, session}) {
+    const ids = await session.savedPostIds;
+    const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids}) });
+    const posts = await postsRes.json();
 
     return {
       props: {
-        posts,
-        ids
+        posts
       }
     }
   }
@@ -17,33 +16,24 @@
 </script>
 
 <script>
-  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, INITIAL_POSTS, SAVEDFEED_SEO } from '$lib/config/saved-posts';
+  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, SAVEDFEED_SEO, NO_SAVED_ITEMS_MESSAGE } from '$lib/config/saved-posts';
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
-  import { savedPosts } from '$lib/components/stores/saved-posts'
-  import { updateStore, feed } from '$lib/components/stores/saved-posts'
+  import { savedPosts } from '$lib/components/stores/saved-posts';
+  import { updateSavedPostsStore, feed } from '$lib/components/stores/saved-posts';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Message from '$lib/components/Message/Message.svelte'
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
 
-  const {title, description, contentType, image } = SAVEDFEED_SEO;
+  const { title, description, contentType, image } = SAVEDFEED_SEO;
   const url = $page.url.href;
 
   export let posts;
 
   let noSavedItems = false;
-
-  const noSavedItemsMessage = {
-    title: "Még nincs mentett bejegyzésed",
-    text: "Böngéssz a főoldalon és mentsd el kedvenc bejegyzéseidet",
-    buttonData: {
-      text: "A főoldalra",
-      href: "/",
-      icon: "ri-arrow-left-line"
-    }
-  }
 
   $: $savedPosts, checkForSavedPosts();
 
@@ -54,21 +44,53 @@
       noSavedItems = false;
     }
   }
-  // export let ids;
 
   feed.set(posts);
 
   let limit = INITIAL_POSTS;
   
   $: limitReached = () => {
-    if ($savedPosts) {
+    if ($savedPosts && $savedPosts.length) {
       return $savedPosts.length === $feed.length;
     }
   };
   
-  onMount(() => {
+  let loading =  false;
+
+  onMount( async () => {
     //update savedPostsstore
-    updateStore();
+    updateSavedPostsStore();
+
+    const previousScrollPosition = sessionStorage.getItem('scrollPosition_saved');
+    
+    //get loaded posts from sessionStorage
+    const previouslyLoadedPosts = sessionStorage.getItem('loadedPosts_saved');
+
+    if (previouslyLoadedPosts && JSON.parse(previouslyLoadedPosts).length) {
+      loading = true;
+
+      console.log('adding posts from sessionStorage')
+      const additionalIdsToLoad = await JSON.parse(sessionStorage.getItem('loadedPosts_saved'));
+      await fetch('/api/get-posts.json', {
+        method: 'POST', 
+        body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
+        .then(res => res.json())
+        .then(res => {
+          feed.set([...$feed, res]); // add posts to feed
+          limit += res.length; // increase limit so posts will show up
+        })
+        //scroll to
+        .then(()=> {
+          loading = false;
+          if (previousScrollPosition) {
+            console.log('Setting scroll position to ' + previousScrollPosition)
+            scrollTo(previousScrollPosition);
+          }
+        })
+        .catch(e => console.error(e));
+    }
+
+
   });
 
   async function showMorePosts() {
@@ -79,46 +101,31 @@
         // load more posts from store
         limit = newLimit;
       } else {
-        const newPosts = await loadPosts(); //add next x number of saved ids
-        feed.set([...$feed, ...await newPosts.posts]);        
+        const nextIds = getNextBatch($feed, $savedPosts, ADDITONAL_POSTS_TO_FETCH);
+        const newPosts = await loadPosts(nextIds); //add next x number of saved ids
+        feed.set([...$feed, ...await newPosts]);        
         limit = newLimit;
+
+        updateLoadedPosts(`saved`, nextIds);
       }
       
-    } catch (error) {
+    } 
+    
+    catch (error) {
       console.error(error);
     }
   }
 
-
-
-  async function loadPosts () {
-    const nextIds = getNextBatch();
-    const data = { requested_posts: nextIds };
-    const requestBody = JSON.stringify(data);
-    const response = await fetch('/api/saved-posts.json', {
-      method: 'POST',
-      credentials: 'same-origin', 
-      body: requestBody
-    });
-    const newPosts = await response.json();
-
-    return newPosts;
-  }
-
-  function getNextBatch () {
-    const fetchedPostIds = $feed.map(post => post.id);
-    const remaingingPostIds = $savedPosts.filter((id)=> !fetchedPostIds.includes(id));
-    const nextPostsToFetch = remaingingPostIds.slice(0, ADDITONAL_POSTS_TO_FETCH);
-
-    return nextPostsToFetch;
-  }
-
+  let scrollY;
 </script>
+
+<svelte:window bind:scrollY on:scroll="{updateScrollPos('scrollPosition_saved', scrollY)}"/>
+
 
 <main class=container>
   
   {#if noSavedItems}
-   <Message message={noSavedItemsMessage}/>   
+   <Message message={NO_SAVED_ITEMS_MESSAGE}/>   
   {:else}
 
   <InfiniteScroller

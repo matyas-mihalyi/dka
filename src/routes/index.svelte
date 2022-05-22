@@ -2,11 +2,12 @@
   import { INITIAL_POSTS } from '$lib/config/homefeed';
   
   export async function load ({fetch}) {
-    const apiRequestBody = JSON.stringify({number_of_posts: INITIAL_POSTS})
 
-    const res = await fetch(`/api/posts.json`, { method: 'POST', body: apiRequestBody});
-    const {posts, ids} = await res.json();
-
+    console.log('load function started')
+    const idsRes = await fetch(`/api/posts.json`);
+    const { ids } = await idsRes.json();
+    const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
+    const posts = await postsRes.json();
     return {
       props: {
         posts,
@@ -17,26 +18,28 @@
 </script>
 
 <script>
-  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_STORED_POSTS, MAX_POSTS, HOMEFEED_SEO } from '$lib/config/homefeed';
+  import { LIMIT_STEP, ADDITONAL_POSTS_TO_FETCH, MAX_POSTS, HOMEFEED_SEO } from '$lib/config/homefeed';
   import { onMount } from 'svelte';
-  import { feed, loadedPostIds } from '$lib/components/stores/posts';
-  import { updateStore } from '$lib/components/stores/saved-posts'
+  import { feed } from '$lib/components/stores/posts';
+  import { updateSavedPostsStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
   import Seo from '$lib/components/Common/Seo/Seo.svelte';
   import Button from '$lib/components/Common/Button/Button.svelte';
+  import Loading from '$lib/components/Loading/Loading.svelte';
 
   export let posts;
   export let ids;
 
+  //SEO
   const {title, description, contentType, image } = HOMEFEED_SEO;
   const url = $page.url.href;
 
+  // infinite scroller
   feed.set(posts);
-  
-  loadedPostIds.set(ids);
   
   let limit = INITIAL_POSTS;
   
@@ -44,91 +47,105 @@
     return (MAX_POSTS <= limit);
   };
 
-
-  onMount(() => {
+  let loading = false;
+  
+  onMount( async () => {
+    console.log('onMount ran');
     //update savedPostsstore
-    updateStore()
-  });
+    updateSavedPostsStore();
+    
+    const previousScrollPosition = sessionStorage.getItem('scrollPosition_home');
+    
+    //get loaded posts from sessionStorage
+    const previouslyLoadedPosts = sessionStorage.getItem('loadedPosts_home');
 
+    if (previouslyLoadedPosts && JSON.parse(previouslyLoadedPosts).length) {
+      loading = true;
+
+      console.log('adding posts from sessionStorage')
+      const additionalIdsToLoad = await JSON.parse(sessionStorage.getItem('loadedPosts_home'));
+      console.log(await additionalIdsToLoad)
+      await fetch('/api/get-posts.json', {
+        method: 'POST', 
+        body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
+        .then(res => res.json())
+        .then(res => {
+          console.log("res.length " + res.length)
+          feed.set([...$feed, res]); // add posts to feed
+          limit += res.length; // increase limit so posts will show up
+        })
+        //scroll to
+        .then(()=> {
+          loading = false;
+          if (previousScrollPosition) {
+            console.log('Setting scroll position to ' + previousScrollPosition)
+            scrollTo(previousScrollPosition);
+          }
+        })
+        .catch(e => console.error(e));
+    }
+
+  });
+  
   async function showMorePosts() {
+    
     try {
       const newLimit = limit + LIMIT_STEP;
-
+      
       if (newLimit <= $feed.length) {
         // load more posts from store
         limit = newLimit;
       } else {
-        const newPosts = await loadPosts(ADDITONAL_POSTS_TO_FETCH);
-        feed.set([...$feed, ...newPosts.posts]);
+        const nextPostIds = getNextBatch($feed, ids, ADDITONAL_POSTS_TO_FETCH);
+        // fetch new posts
+        const newPosts = await loadPosts(nextPostIds);
+        console.log('showMorePosts ran')
+        console.log(await newPosts.length)
+        
+        feed.set([...$feed, ...await newPosts]);
         limit = newLimit;
+
+        const newIds = await newPosts.map(post => post.id);
+        updateLoadedPosts(`home`, newIds);
       }
       
     } catch (error) {
       console.error(error);
     }
   }
-
+  
   async function loadNewPosts () {
-    window.document.body.scrollTop = 0; // For Safari
-    window.document.documentElement.scrollTop = 0;
+    scrollTo(0);
     
     try {
       await fetch('/clear-posts', {method: 'DELETE'}); //delete ids cookie
       feed.set([]);
-      loadedPostIds.set([]);
-      const newPosts = await loadPosts(INITIAL_POSTS);
-      feed.set(newPosts.posts);
-      loadedPostIds.set(newPosts.ids);
+      sessionStorage.setItem('loadedPosts_home', JSON.stringify([]));
+      sessionStorage.setItem('scrollPosition_home', 0);
+
+      const idsRes = await fetch(`/api/posts.json`);
+      const { newIds } = await idsRes.json();
+      const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
+      const newPosts = await postsRes.json();
+
+      feed.set(await newPosts);
+      ids = await newIds;
+      
       limit = INITIAL_POSTS;
+      
       observe.set(true); // restart observer
     } catch (error) {
       console.error(error);
     }
   };
 
+  let scrollY;
 
-  async function loadPosts (numberOfPosts = ADDITONAL_POSTS_TO_FETCH) {
-    const data = {
-          number_of_posts: numberOfPosts,
-          loaded_posts: $loadedPostIds.splice($loadedPostIds.length - MAX_STORED_POSTS, $loadedPostIds.length)
-        };
-    const requestBody = JSON.stringify(data)
-    const response = await fetch('/api/posts.json', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: requestBody
-    });
-    const newPosts = await response.json();
-
-    return newPosts;
-  }
 </script>
 
 <style lang="less">
   @import './Home.less';
 </style>
-<main class=container>
-  <InfiniteScroller
-    elementToObserve={'footer'}
-    limitReached={limitReached()}
-    showMorePosts={()=>showMorePosts()}
-  >
-    {#each $feed?.slice(0, limit) as post}
-      <Post post={post} />
-    {/each}
-    {#if limitReached()}
-      <Button 
-        text={'Új képek betöltése'}
-        icon={'ri-refresh-line'}
-        on:click={loadNewPosts}
-      />
-    {/if}
-  </InfiniteScroller>
-</main>
-
 
 <Seo 
   {title}
@@ -137,3 +154,29 @@
   {contentType}
   {image}
 />
+
+<svelte:window bind:scrollY on:scroll="{updateScrollPos('scrollPosition_home', scrollY)}"/>
+
+{#if loading}
+  <Loading />
+{/if}
+
+<main class=container>
+  <InfiniteScroller
+    elementToObserve={'article.post:last-of-type'}
+    limitReached={limitReached()}
+    showMorePosts={()=>showMorePosts()}
+  >
+  {#each $feed?.slice(0, limit) as post}
+    <Post post={post} />
+  {/each}
+  {#if limitReached()}
+    <Button 
+      text={'Új képek betöltése'}
+      icon={'ri-refresh-line'}
+      on:click={loadNewPosts}
+    />
+  {/if}
+  </InfiniteScroller>
+</main>
+

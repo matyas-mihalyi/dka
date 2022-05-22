@@ -44,6 +44,7 @@ div#app-wrapper.dark {
 body {
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
   background-color: var(--ui-primary);
+  scroll-behavior: smooth;
 }
 
 div#app-wrapper {

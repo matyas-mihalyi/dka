@@ -2,9 +2,9 @@ import { writable, get } from "svelte/store";
 import { browser } from "$app/env";
 
 
-export function getSavedPosts () { return browser ? JSON.parse(window.localStorage.getItem("savedPosts")) : [];}
+export function getSavedPosts () { return browser ? JSON.parse(window.localStorage.getItem("savedPosts")) : null;}
 
-export function updateStore () { savedPosts.set(getSavedPosts()); };
+export function updateSavedPostsStore () { savedPosts.set(getSavedPosts()); };
 
 export const savedPosts = writable([]);
 

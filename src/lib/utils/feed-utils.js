@@ -11,8 +11,12 @@ export function updateScrollPos (key, pos) {
 
 export function updateLoadedPosts (key, ids = []) {
   const stored = JSON.parse(sessionStorage.getItem(`loadedPosts_${key}`)) || [];
-  const updated = [...stored, ...ids];
-  sessionStorage.setItem(`loadedPosts_${key}`, JSON.stringify(updated));
+  for (let id of ids) {
+    if (!stored.includes(id)) {
+      stored.push(id);
+    }
+  }
+  sessionStorage.setItem(`loadedPosts_${key}`, JSON.stringify(stored));
 }
 
 export async function loadPosts (ids = []) {

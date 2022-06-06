@@ -3,11 +3,11 @@
   
   export async function load ({fetch}) {
 
-    console.log('load function started')
     const idsRes = await fetch(`/api/posts.json`);
-    const { ids } = await idsRes.json();
+    const ids = await idsRes.json();
     const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
     const posts = await postsRes.json();
+
     return {
       props: {
         posts,
@@ -23,7 +23,7 @@
   import { feed } from '$lib/components/stores/posts';
   import { updateSavedPostsStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
-  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, updateFeedFromSessionStorage, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
@@ -50,7 +50,6 @@
   let loading = false;
   
   onMount( async () => {
-    console.log('onMount ran');
     //update savedPostsstore
     updateSavedPostsStore();
     
@@ -62,23 +61,20 @@
     if (previouslyLoadedPosts && JSON.parse(previouslyLoadedPosts).length) {
       loading = true;
 
-      console.log('adding posts from sessionStorage')
       const additionalIdsToLoad = await JSON.parse(sessionStorage.getItem('loadedPosts_home'));
-      console.log(await additionalIdsToLoad)
       await fetch('/api/get-posts.json', {
         method: 'POST', 
         body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
         .then(res => res.json())
         .then(res => {
-          console.log("res.length " + res.length)
-          feed.set([...$feed, res]); // add posts to feed
+          // add posts to feed
+          updateFeedFromSessionStorage(feed, res);
           limit += res.length; // increase limit so posts will show up
         })
         //scroll to
         .then(()=> {
           loading = false;
           if (previousScrollPosition) {
-            console.log('Setting scroll position to ' + previousScrollPosition)
             scrollTo(previousScrollPosition);
           }
         })
@@ -99,8 +95,6 @@
         const nextPostIds = getNextBatch($feed, ids, ADDITONAL_POSTS_TO_FETCH);
         // fetch new posts
         const newPosts = await loadPosts(nextPostIds);
-        console.log('showMorePosts ran')
-        console.log(await newPosts.length)
         
         feed.set([...$feed, ...await newPosts]);
         limit = newLimit;
@@ -124,8 +118,8 @@
       sessionStorage.setItem('scrollPosition_home', 0);
 
       const idsRes = await fetch(`/api/posts.json`);
-      const { newIds } = await idsRes.json();
-      const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
+      const newIds = await idsRes.json();
+      const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await newIds.slice(0, INITIAL_POSTS)}) });
       const newPosts = await postsRes.json();
 
       feed.set(await newPosts);
@@ -163,7 +157,7 @@
 
 <main class=container>
   <InfiniteScroller
-    elementToObserve={'article.post:last-of-type'}
+    elementToObserve={'footer'}
     limitReached={limitReached()}
     showMorePosts={()=>showMorePosts()}
   >

@@ -3,11 +3,11 @@
   
   export async function load ({fetch}) {
 
-    console.log('load function started')
     const idsRes = await fetch(`/api/posts.json`);
-    const { ids } = await idsRes.json();
+    const ids = await idsRes.json();
     const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
     const posts = await postsRes.json();
+
     return {
       props: {
         posts,
@@ -50,7 +50,6 @@
   let loading = false;
   
   onMount( async () => {
-    console.log('onMount ran');
     //update savedPostsstore
     updateSavedPostsStore();
     
@@ -62,9 +61,7 @@
     if (previouslyLoadedPosts && JSON.parse(previouslyLoadedPosts).length) {
       loading = true;
 
-      console.log('adding posts from sessionStorage')
       const additionalIdsToLoad = await JSON.parse(sessionStorage.getItem('loadedPosts_home'));
-      console.log(await additionalIdsToLoad)
       await fetch('/api/get-posts.json', {
         method: 'POST', 
         body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
@@ -78,7 +75,6 @@
         .then(()=> {
           loading = false;
           if (previousScrollPosition) {
-            console.log('Setting scroll position to ' + previousScrollPosition)
             scrollTo(previousScrollPosition);
           }
         })
@@ -99,7 +95,6 @@
         const nextPostIds = getNextBatch($feed, ids, ADDITONAL_POSTS_TO_FETCH);
         // fetch new posts
         const newPosts = await loadPosts(nextPostIds);
-        console.log('showMorePosts ran')
         
         feed.set([...$feed, ...await newPosts]);
         limit = newLimit;
@@ -123,9 +118,8 @@
       sessionStorage.setItem('scrollPosition_home', 0);
 
       const idsRes = await fetch(`/api/posts.json`);
-      const { newIds } = await idsRes.json();
-      console.log(newIds)
-      const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
+      const newIds = await idsRes.json();
+      const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await newIds.slice(0, INITIAL_POSTS)}) });
       const newPosts = await postsRes.json();
 
       feed.set(await newPosts);
@@ -163,7 +157,7 @@
 
 <main class=container>
   <InfiniteScroller
-    elementToObserve={'article.post:last-of-type'}
+    elementToObserve={'footer'}
     limitReached={limitReached()}
     showMorePosts={()=>showMorePosts()}
   >

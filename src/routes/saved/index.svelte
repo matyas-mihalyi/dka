@@ -69,7 +69,6 @@
     if (previouslyLoadedPosts && JSON.parse(previouslyLoadedPosts).length) {
       loading = true;
 
-      console.log('adding posts from sessionStorage')
       const additionalIdsToLoad = await JSON.parse(sessionStorage.getItem('loadedPosts_saved'));
       await fetch('/api/get-posts.json', {
         method: 'POST', 
@@ -84,7 +83,6 @@
         .then(()=> {
           loading = false;
           if (previousScrollPosition) {
-            console.log('Setting scroll position to ' + previousScrollPosition)
             scrollTo(previousScrollPosition);
           }
         })

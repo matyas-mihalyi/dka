@@ -22,23 +22,24 @@
   onMount(() => {
     
     // updateSavedPostsStore() update in index.svelte!
-    
-    if (browser && document.querySelector(elementToObserve)) {
-      const handleIntersect = (entries, observer) => {
-        entries.forEach((entry) => {
-          if (limitReached) {
-            console.log("Limit reached");
-            observer.unobserve(entry.target);
-            observe.set(false);
-          }
-          showMorePosts();
-          // console.log(document.querySelector(elementToObserve));
-        });
-      };
-      const options = { threshold: 0.5, rootMargin: '0% 0% 0% 0%' };
-      observer = new IntersectionObserver(handleIntersect, options);
-      observer.observe(document.querySelector(elementToObserve));
-    }
+      if (browser && document.querySelector(elementToObserve)) {
+        const handleIntersect = (entries, observer) => {
+          entries.forEach((entry) => {
+            if (limitReached) {
+              console.log("Limit reached");
+              observer.unobserve(entry.target);
+              observe.set(false);
+              return
+            }
+            if (entry.isIntersecting) {
+              showMorePosts();
+            }
+          });
+        };
+        const options = { threshold: 0.5, rootMargin: '0% 0% 0% 0%' };
+        observer = new IntersectionObserver(handleIntersect, options);
+        observer.observe(document.querySelector(elementToObserve));
+      }
   });
 
   $: $observe, restart();

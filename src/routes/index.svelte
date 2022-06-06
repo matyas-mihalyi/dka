@@ -23,7 +23,7 @@
   import { feed } from '$lib/components/stores/posts';
   import { updateSavedPostsStore } from '$lib/components/stores/saved-posts'
   import { page } from '$app/stores';
-  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, updateFeedFromSessionStorage, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller, {observe} from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Post from '$lib/components/Post/Post.svelte';
@@ -70,8 +70,8 @@
         body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
         .then(res => res.json())
         .then(res => {
-          console.log("res.length " + res.length)
-          feed.set([...$feed, res]); // add posts to feed
+          // add posts to feed
+          updateFeedFromSessionStorage(feed, res);
           limit += res.length; // increase limit so posts will show up
         })
         //scroll to
@@ -100,7 +100,6 @@
         // fetch new posts
         const newPosts = await loadPosts(nextPostIds);
         console.log('showMorePosts ran')
-        console.log(await newPosts.length)
         
         feed.set([...$feed, ...await newPosts]);
         limit = newLimit;
@@ -125,6 +124,7 @@
 
       const idsRes = await fetch(`/api/posts.json`);
       const { newIds } = await idsRes.json();
+      console.log(newIds)
       const postsRes = await fetch(`/api/get-posts.json`, { method: 'POST', body: JSON.stringify({requested_ids: await ids.slice(0, INITIAL_POSTS)}) });
       const newPosts = await postsRes.json();
 

@@ -3,5 +3,6 @@ export {
   updateScrollPos,
   updateLoadedPosts,
   loadPosts,
-  getNextBatch
+  getNextBatch,
+  updateFeedFromSessionStorage
 } from './feed-utils';

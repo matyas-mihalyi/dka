@@ -26,7 +26,7 @@
   import { page } from '$app/stores';
   import { onMount } from 'svelte/internal';
   import { writable } from 'svelte/store';
-  import { updateScrollPos, scrollTo, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
+  import { updateScrollPos, scrollTo, updateFeedFromSessionStorage, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
 
   import Loading from '$lib/components/Loading/Loading.svelte';
   import Post from '$lib/components/Post/Post.svelte';
@@ -59,7 +59,8 @@
         body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
         .then(res => res.json())
         .then(res => {
-          feed.set([...$feed, res]); // add posts to feed
+          // add posts to feed
+          updateFeedFromSessionStorage(feed, res);
           limit += res.length; // increase limit so posts will show up
         })
         //scroll to

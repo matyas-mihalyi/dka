@@ -21,7 +21,7 @@
   import { page } from '$app/stores';
   import { savedPosts } from '$lib/components/stores/saved-posts';
   import { updateSavedPostsStore, feed } from '$lib/components/stores/saved-posts';
-  import { scrollTo, updateScrollPos, updateLoadedPosts, loadPosts, getNextBatch } from '$lib/utils/index';
+  import { scrollTo, updateScrollPos, updateLoadedPosts, updateFeedFromSessionStorage,loadPosts, getNextBatch } from '$lib/utils/index';
 
   import InfiniteScroller from '$lib/components/InfiniteScroller/InfiniteScroller.svelte';
   import Message from '$lib/components/Message/Message.svelte'
@@ -76,7 +76,8 @@
         body: JSON.stringify({requested_ids: await additionalIdsToLoad})})
         .then(res => res.json())
         .then(res => {
-          feed.set([...$feed, res]); // add posts to feed
+          // add posts to feed
+          updateFeedFromSessionStorage(feed, res);          
           limit += res.length; // increase limit so posts will show up
         })
         //scroll to
